@@ -1,0 +1,9 @@
+[
+  {"name":"Tên / Từ khóa","type":"text"},
+  {"name":"Loại trang","type":"select","options":[{"name":"Leadpage (form)"},{"name":"Sale page (mua)"},{"name":"Trang khác"}]},
+  {"name":"URL","type":"text"},
+  {"name":"Sự kiện","type":"select","options":[{"name":"LEAD"},{"name":"PURCHASE"},{"name":"COMPLETE_REGISTRATION"}]},
+  {"name":"Pixel gợi ý","type":"text"},
+  {"name":"Đang dùng","type":"select","options":[{"name":"Có"},{"name":"Ngưng"}]},
+  {"name":"Ghi chú","type":"text"}
+]

@@ -1,0 +1,47 @@
+{
+  "slug": "ten-ebook-khong-dau",
+  "title": "Ebook miễn phí: Tên Ebook Của Bạn",
+  "description": "Nhận miễn phí ebook 'Tên Ebook' — 1 câu nói rõ lợi ích.",
+  "mockup_image": "/duong/dan/toi/anh-bia-mockup.png",
+  "favicon": "",
+
+  "audience_headline": "Dành cho [đối tượng] muốn [kết quả], chưa biết [rào cản 1], ngại [rào cản 2] nhưng vẫn muốn [mong ước].",
+  "pains": [
+    "Nỗi đau 1 → hậu quả cụ thể",
+    "Nỗi đau 2 → hậu quả cụ thể",
+    "Nỗi đau 3 → nhưng [nỗi sợ]",
+    "Câu đồng cảm dài: bạn cảm thấy bị bỏ lại phía sau khi... còn bạn thì vẫn đang mày mò..."
+  ],
+
+  "helper_text": "EBOOK NÀY SẼ GIÚP BẠN",
+  "ribbon_text": "QUÀ TẶNG ĐẶC BIỆT",
+  "gift_text": "TÔI TẶNG BẠN EBOOK",
+  "float_cta": "TẢI NGAY",
+  "button_text": "NHẬN EBOOK MIỄN PHÍ",
+  "countdown_minutes": 720,
+  "placeholders": { "name": "Họ và tên", "phone": "Số điện thoại", "email": "Email" },
+
+  "brand_name": "",
+  "contact": {
+    "address": "",
+    "hotline": "",
+    "email": ""
+  },
+  "cta_bar": { "button1": "TẢI EBOOK", "button2": "TẢI NGAY" },
+
+  "popup": {
+    "title": "Cảm ơn anh/chị!",
+    "message": "Thông tin đã được ghi nhận. Vui lòng để ý Zalo/điện thoại và email — ebook «Tên Ebook» sẽ được gửi tới anh/chị trong ít phút.",
+    "button": "Đóng"
+  },
+
+  "toast_verb": "vừa đăng ký nhận ebook",
+  "toast_names": [],
+
+  "form_endpoint": "",
+  "success_redirect": "",
+  "conversion_value": 10000,
+  "fb_pixel": "",
+  "ga4": "",
+  "tiktok_pixel": ""
+}

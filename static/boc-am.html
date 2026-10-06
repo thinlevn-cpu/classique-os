@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bóc âm · Classique OS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=Exo+2:wght@600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#050b14;--card:rgba(10,24,40,.75);--line:rgba(63,232,255,.35);--line2:rgba(63,232,255,.16);--cyan:#3fe8ff;--violet:#b86bff;--ink:#e6f4ff;--muted:#8ba6bd;--ok:#3dffb0;--bad:#ff5a6e}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:radial-gradient(900px 500px at 20% -10%,#0c2a4a 0%,transparent 60%),var(--bg);color:var(--ink);font:15px/1.55 "Be Vietnam Pro",system-ui,sans-serif;min-height:100vh}
+a{color:var(--cyan);text-decoration:none}
+.dau{display:flex;align-items:center;gap:14px;padding:14px 22px;border-bottom:1px solid var(--line2);position:sticky;top:0;background:rgba(5,11,20,.92);z-index:5}
+.dau b{font:700 18px "Exo 2";letter-spacing:.08em;background:linear-gradient(90deg,#ffd27a,#3fe8ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.dau .nao{margin-left:auto;font-size:12.5px;color:var(--muted)}
+main{max-width:980px;margin:0 auto;padding:18px 16px 60px;display:flex;flex-direction:column;gap:16px}
+.the{background:var(--card);border:1px solid var(--line2);border-radius:14px;padding:16px}
+.tabs{display:flex;gap:6px}.tabs button{border:1px solid var(--line2);background:rgba(8,22,38,.6);color:var(--muted);font:600 14px "Exo 2";padding:8px 16px;border-radius:9px;cursor:pointer}
+.tabs button.on{color:#04121e;background:linear-gradient(90deg,var(--cyan),#9af3ff);border-color:transparent}
+.hang{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+input,select,textarea{border-radius:9px;border:1px solid var(--line);background:rgba(4,14,26,.8);color:var(--ink);padding:9px 12px;font:inherit}
+#tieu-de{flex:1;min-width:220px;font-weight:600}
+.btn{border:1px solid var(--line);background:rgba(10,30,50,.75);color:#d8ecf8;border-radius:9px;padding:9px 14px;font:600 13.5px "Be Vietnam Pro";cursor:pointer}
+.btn:hover{border-color:var(--cyan)}.btn:disabled{opacity:.5;cursor:wait}
+.btn.vang{background:linear-gradient(90deg,var(--cyan),#9af3ff 55%,#c9a6ff);color:#04121e;border:0}
+#nut{min-width:170px;font-size:15px;padding:12px 18px}
+#nut.dang{background:linear-gradient(90deg,#ff5a6e,#ff9a6b);color:#fff}
+.tt{font-size:13px;color:var(--muted)}.tt .cham{display:inline-block;width:9px;height:9px;border-radius:50%;background:#55697d;margin-right:6px}
+.tt.nghe .cham{background:var(--bad);box-shadow:0 0 10px var(--bad);animation:nhay 1.2s infinite}@keyframes nhay{50%{opacity:.35}}
+#gio{font:13px "JetBrains Mono";color:var(--cyan)}
+#ban{min-height:320px;max-height:62vh;overflow:auto;display:flex;flex-direction:column;gap:8px;font-size:15.5px}
+.dong{display:flex;gap:10px}.dong time{font:12px "JetBrains Mono";color:var(--muted);padding-top:3px;flex:none;width:44px}
+.dong span{flex:1}.dong.tam span{color:#9fb8cc}
+.trong{color:var(--muted);text-align:center;margin:auto;font-size:14px}
+.ghi{font-size:12.5px;color:var(--muted);line-height:1.6}
+details summary{cursor:pointer;color:var(--cyan);font-weight:600}
+#tu{width:100%;min-height:90px;margin-top:8px;font:13px "JetBrains Mono"}
+#ai-ra{white-space:pre-wrap;font-size:14.5px;max-height:50vh;overflow:auto}
+.tab{display:none}.tab.on{display:flex;flex-direction:column;gap:14px}
+#tha{border:2px dashed var(--line);border-radius:14px;padding:30px;text-align:center;color:var(--muted);cursor:pointer}
+#tha.keo{border-color:var(--cyan);color:var(--ink)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:rgba(6,18,32,.97);border:1px solid var(--line);padding:10px 16px;border-radius:10px;opacity:0;transition:.25s;pointer-events:none;z-index:9}
+.toast.hien{opacity:1}
+@media (max-width:640px){.dau{padding:12px 14px}main{padding:12px 12px 50px}#nut{width:100%}}
+</style>
+</head>
+<body>
+<header class="dau"><a href="/" title="Về Classique OS">←</a><b>BÓC ÂM</b><span class="tt" style="margin-left:6px">ChatGPT Live · chỉ nghe</span><span class="nao" id="nao"></span></header>
+<main>
+  <div class="tabs"><button class="on" data-t="nghe">🎙 Nghe trực tiếp</button><button data-t="tep">📁 Từ file ghi âm</button></div>
+
+  <section class="tab on" data-tab="nghe">
+    <div class="the hang">
+      <input id="tieu-de" placeholder="Tên buổi (vd: Học thẩm định Hermès buổi 3)">
+      <select id="nguon" title="Nguồn tiếng"></select>
+      <button class="btn vang" id="nut">● Bắt đầu nghe</button>
+      <span class="tt" id="tt"><span class="cham"></span>Sẵn sàng</span><span id="gio"></span>
+    </div>
+    <div class="ghi" id="goi-y">Zoom trên Mac: chọn nguồn <b>BlackHole</b> (tiếng gốc từ app Zoom). Họp offline: chọn micro. Zoom chạy trong trình duyệt: chọn <b>Tab trình duyệt</b> và tick "Chia sẻ âm thanh".</div>
+  </section>
+
+  <section class="tab" data-tab="tep">
+    <div class="the"><div id="tha">Kéo file ghi âm vào đây (m4a, mp3, mp4, wav...) hoặc bấm để chọn<br><span class="ghi">Bóc bằng Whisper qua Groq. File dài tự cắt đoạn 10 phút.</span></div>
+      <input type="file" id="chon-tep" accept="audio/*,video/*" hidden></div>
+  </section>
+
+  <div class="the">
+    <div id="ban"><div class="trong">Chữ sẽ hiện ở đây khi bắt đầu nghe.</div></div>
+  </div>
+
+  <div class="the hang">
+    <button class="btn" data-x="chep">📋 Chép</button>
+    <button class="btn" data-x="txt">⬇️ .txt</button>
+    <button class="btn" data-x="md">⬇️ .md</button>
+    <button class="btn" data-x="chuan_hoa">✨ Chuẩn hoá</button>
+    <button class="btn" data-x="giao_trinh">📖 Biên tập giáo trình</button>
+    <button class="btn vang" data-x="luu">💾 Lưu vào bộ não</button>
+    <button class="btn" data-x="xoa" style="margin-left:auto">🗑 Bản mới</button>
+  </div>
+  <div class="the" id="ai-hop" hidden><div class="hang" style="justify-content:space-between"><b id="ai-ten">Kết quả AI</b><span><button class="btn" id="ai-dung">Dùng bản này</button> <button class="btn" id="ai-dong">Đóng</button></span></div><div id="ai-ra"></div></div>
+
+  <details class="the"><summary>🎯 Từ riêng (giúp nghe đúng chính tả)</summary>
+    <div class="ghi">Mỗi dòng một từ hoặc tên riêng: thương hiệu, tên người, thuật ngữ. ChatGPT Live và Whisper sẽ ưu tiên viết đúng y như vậy.</div>
+    <textarea id="tu"></textarea><div class="hang" style="margin-top:8px"><button class="btn" id="luu-tu">Lưu từ riêng</button></div>
+  </details>
+</main>
+<div class="toast" id="toast"></div>
+<script>
+const $ = s => document.querySelector(s), esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const toast = t => { const e = $("#toast"); e.textContent = t; e.classList.add("hien"); clearTimeout(e._t); e._t = setTimeout(() => e.classList.remove("hien"), 3200); };
+async function api(p, o = {}) { const r = await fetch(p, { headers: o.body instanceof FormData ? {} : { "Content-Type": "application/json" }, ...o });
+  if (r.status === 401) { location.href = "/dang-nhap"; throw new Error("Hết phiên"); }
+  const d = await r.json().catch(() => ({})); if (!r.ok) throw new Error(d.detail || "Lỗi " + r.status); return d; }
+const mmss = s => { s = Math.max(0, Math.floor(s)); const h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), x = s % 60; return (h ? h + ":" + String(m).padStart(2, "0") : m) + ":" + String(x).padStart(2, "0"); };
+
+// ---------- bản gỡ băng: các dòng {t (giây), text} ----------
+let DONG = [], NGUON_GHI = "ghi âm trực tiếp";
+try { const c = JSON.parse(localStorage.getItem("bocam-ban") || "null"); if (c) { DONG = c.dong || []; $("#tieu-de").value = c.tieu_de || ""; } } catch (e) {}
+const luuMay = () => { try { localStorage.setItem("bocam-ban", JSON.stringify({ dong: DONG, tieu_de: $("#tieu-de").value })); } catch (e) {} };
+$("#tieu-de").oninput = luuMay;
+function ve() {
+  const b = $("#ban"), cuoi = b.scrollHeight - b.scrollTop - b.clientHeight < 60;
+  b.innerHTML = DONG.length ? DONG.map((d, i) => `<div class="dong ${d.tam ? "tam" : ""}"><time>${mmss(d.t)}</time><span>${esc(d.text)}</span></div>`).join("") : '<div class="trong">Chữ sẽ hiện ở đây khi bắt đầu nghe.</div>';
+  if (cuoi) b.scrollTop = b.scrollHeight;
+}
+ve();
+const vanBan = (gio = true) => DONG.filter(d => d.text.trim()).map(d => (gio ? `[${mmss(d.t)}] ` : "") + d.text.trim()).join("\n");
+
+// ---------- nguồn tiếng ----------
+async function napNguon(choQuyen = false) {
+  const sel = $("#nguon"), cu = sel.value;
+  if (choQuyen) { try { (await navigator.mediaDevices.getUserMedia({ audio: true })).getTracks().forEach(t => t.stop()); } catch (e) {} }
+  const tb = (await navigator.mediaDevices.enumerateDevices()).filter(d => d.kind === "audioinput" && d.deviceId !== "communications");
+  sel.innerHTML = tb.map(d => `<option value="mic:${esc(d.deviceId)}">${/blackhole/i.test(d.label) ? "🎧 " : "🎤 "}${esc(d.label || "Micro")}</option>`).join("") +
+    (navigator.mediaDevices.getDisplayMedia ? '<option value="tab">🖥 Tab trình duyệt (Zoom web, YouTube...)</option>' : "");
+  const bh = [...sel.options].find(o => /blackhole/i.test(o.text));
+  if (cu && [...sel.options].some(o => o.value === cu)) sel.value = cu; else if (bh) sel.value = bh.value;
+}
+napNguon(); navigator.mediaDevices.addEventListener?.("devicechange", () => napNguon());
+$("#nguon").addEventListener("focus", () => { if (![...$("#nguon").options].some(o => o.text.trim().length > 3)) napNguon(true); }, { once: true });
+
+// ---------- nghe trực tiếp qua ChatGPT Live ----------
+const N = { pc: null, id: "", luong: null, dang: false, bd: 0, lech: 0, cuoiMs: -1e9, hen: null };
+function trangThai(nghe, chu) { $("#tt").className = "tt" + (nghe ? " nghe" : ""); $("#tt").innerHTML = `<span class="cham"></span>${esc(chu)}`; }
+async function layLuong() {
+  const v = $("#nguon").value || "mic:default";
+  if (v === "tab") {
+    const s = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false }, systemAudio: "include" });
+    s.getVideoTracks().forEach(t => t.stop());
+    if (!s.getAudioTracks().length) throw new Error('Chưa bắt được tiếng: khi chọn tab nhớ tick "Chia sẻ âm thanh".');
+    NGUON_GHI = "tab trình duyệt"; return s;
+  }
+  const id = v.slice(4), loai = $("#nguon").selectedOptions[0]?.text || "";
+  const sach = /blackhole/i.test(loai);           // tiếng máy (Zoom) thì không lọc ồn, giữ nguyên
+  NGUON_GHI = sach ? "Zoom qua BlackHole" : "micro";
+  return navigator.mediaDevices.getUserMedia({ audio: { deviceId: id && id !== "default" ? { exact: id } : undefined, echoCancellation: !sach, noiseSuppression: !sach, autoGainControl: !sach } });
+}
+function nhanTu(msg) {
+  let m; try { m = JSON.parse(msg); } catch (e) { return; }
+  if (m.type === "input_transcript.added") {
+    const t = m.item?.text || "", bd = (m.start_ms || 0), kt = (m.end_ms || bd);
+    const giay = N.lech + bd / 1000, cuoi = DONG[DONG.length - 1];
+    const ngat = !cuoi || bd - N.cuoiMs > 1600 || (/[.!?…]$/.test(cuoi.text.trim()) && bd - N.cuoiMs > 700) || cuoi.text.length > 420;
+    if (ngat) DONG.push({ t: giay, text: t.trimStart() }); else cuoi.text += t;
+    N.cuoiMs = kt; ve(); clearTimeout(N.hen); N.hen = setTimeout(luuMay, 1500);
+  } else if (m.type === "session.closed" && N.dang) {
+    noiLai("phiên " + (m.reason || "hết hạn"));
+  }
+}
+async function moPhien() {
+  const pc = N.pc = new RTCPeerConnection();
+  N.luong.getAudioTracks().forEach(t => pc.addTrack(t, N.luong));
+  const dc = pc.createDataChannel("oai-events"); dc.onmessage = e => nhanTu(e.data);
+  pc.onconnectionstatechange = () => { if (N.pc === pc && N.dang && ["failed", "disconnected"].includes(pc.connectionState)) noiLai("mất kết nối"); };
+  // KHÔNG phát tiếng trả về: chế độ chỉ nghe, model đã được dặn im lặng
+  const o = await pc.createOffer(); await pc.setLocalDescription(o);
+  const r = await api("/api/boc-am/bat-dau", { method: "POST", body: JSON.stringify({ sdp: o.sdp }) });
+  N.id = r.id; await pc.setRemoteDescription({ type: "answer", sdp: r.sdp });
+  N.lech = (Date.now() - N.bd) / 1000; N.cuoiMs = -1e9;
+}
+async function noiLai(lyDo) {       // phiên ChatGPT có hạn giờ: tự mở phiên mới, nối tiếp bản đang ghi
+  if (!N.dang) return; trangThai(true, "Đang nối lại (" + lyDo + ")...");
+  try { N.pc?.close(); } catch (e) {} if (N.id) api("/api/boc-am/dung", { method: "POST", body: JSON.stringify({ id: N.id }) }).catch(() => {});
+  try { await moPhien(); trangThai(true, "Đang nghe"); } catch (e) { trangThai(false, "Lỗi: " + e.message); setTimeout(() => noiLai("thử lại"), 4000); }
+}
+async function batDau() {
+  try {
+    trangThai(false, "Đang mở nguồn tiếng..."); N.luong = await layLuong(); N.dang = true;
+    N.bd = Date.now() - (DONG.length ? (DONG[DONG.length - 1].t + 2) * 1000 : 0);
+    trangThai(true, "Đang kết nối ChatGPT Live..."); await moPhien();
+    trangThai(true, "Đang nghe"); $("#nut").textContent = "■ Dừng"; $("#nut").classList.add("dang");
+    N.luong.getAudioTracks()[0].onended = () => dung();
+    N.tick = setInterval(() => { $("#gio").textContent = mmss((Date.now() - N.bd) / 1000); }, 1000);
+    napNguon();
+  } catch (e) { N.dang = false; trangThai(false, "Chưa nghe được"); toast(e.name === "NotAllowedError" ? "Anh cho phép dùng micro / chia sẻ màn hình nhé." : e.message); N.luong?.getTracks().forEach(t => t.stop()); }
+}
+function dung() {
+  N.dang = false; clearInterval(N.tick);
+  try { N.pc?.close(); } catch (e) {} N.pc = null;
+  N.luong?.getTracks().forEach(t => t.stop()); N.luong = null;
+  if (N.id) api("/api/boc-am/dung", { method: "POST", body: JSON.stringify({ id: N.id }) }).catch(() => {}); N.id = "";
+  $("#nut").textContent = "● Nghe tiếp"; $("#nut").classList.remove("dang"); trangThai(false, DONG.length ? "Đã dừng · bấm Lưu vào bộ não" : "Sẵn sàng"); luuMay();
+}
+$("#nut").onclick = () => N.dang ? dung() : batDau();
+window.addEventListener("beforeunload", e => { if (N.dang) { e.preventDefault(); e.returnValue = ""; } });
+
+// ---------- từ file ----------
+const tha = $("#tha");
+tha.onclick = () => $("#chon-tep").click();
+["dragover", "dragenter"].forEach(ev => tha.addEventListener(ev, e => { e.preventDefault(); tha.classList.add("keo"); }));
+["dragleave", "drop"].forEach(ev => tha.addEventListener(ev, e => { e.preventDefault(); tha.classList.remove("keo"); }));
+tha.addEventListener("drop", e => { const f = e.dataTransfer.files[0]; if (f) bocTep(f); });
+$("#chon-tep").onchange = e => { const f = e.target.files[0]; if (f) bocTep(f); e.target.value = ""; };
+async function bocTep(f) {
+  if (DONG.length && !confirm("Bản hiện tại sẽ được thay bằng bản bóc từ file. Tiếp tục?")) return;
+  tha.innerHTML = `Đang tải lên và bóc <b>${esc(f.name)}</b> (${(f.size / 1048576).toFixed(1)} MB)... file dài có thể mất vài phút.`;
+  const fd = new FormData(); fd.append("tep", f);
+  try { const r = await api("/api/boc-am/tep", { method: "POST", body: fd });
+    DONG = r.doan.map(d => ({ t: d.t, text: d.text })); NGUON_GHI = "file " + f.name; if (!$("#tieu-de").value) $("#tieu-de").value = f.name.replace(/\.[^.]+$/, "");
+    ve(); luuMay(); toast(`Xong: ${r.doan.length} đoạn từ ${r.so_phan} phần.`); }
+  catch (e) { toast(e.message); }
+  tha.innerHTML = 'Kéo file ghi âm vào đây hoặc bấm để chọn<br><span class="ghi">Bóc bằng Whisper qua Groq. File dài tự cắt đoạn 10 phút.</span>';
+}
+document.querySelector(".tabs").onclick = e => { const b = e.target.closest("[data-t]"); if (!b) return;
+  document.querySelectorAll(".tabs button").forEach(x => x.classList.toggle("on", x === b));
+  document.querySelectorAll(".tab").forEach(x => x.classList.toggle("on", x.dataset.tab === b.dataset.t)); };
+
+// ---------- công cụ ----------
+const tai = (ten, noi, kieu) => { const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([noi], { type: kieu })); a.download = ten; a.click(); };
+const tenTep = () => ($("#tieu-de").value.trim() || "boc-am").replace(/[\\/:*?"<>|]/g, "-");
+let AI = { loai: "", van: "" };
+document.querySelector("main").addEventListener("click", async e => {
+  const b = e.target.closest("[data-x]"); if (!b) return; const x = b.dataset.x;
+  if (x === "xoa") { if (N.dang) return toast("Dừng nghe trước đã."); if (DONG.length && !confirm("Bắt đầu bản mới? Bản hiện tại sẽ xoá khỏi trang (đã lưu vào bộ não thì vẫn còn ở đó).")) return; DONG = []; $("#tieu-de").value = ""; ve(); luuMay(); return; }
+  if (!DONG.length) return toast("Chưa có nội dung.");
+  if (x === "chep") { await navigator.clipboard.writeText(vanBan(false)); return toast("Đã chép."); }
+  if (x === "txt") return tai(tenTep() + ".txt", vanBan(), "text/plain");
+  if (x === "md") return tai(tenTep() + ".md", `# ${$("#tieu-de").value || "Bóc âm"}\n\n` + vanBan(), "text/markdown");
+  if (x === "luu") { b.disabled = true; try { const r = await api("/api/boc-am/luu", { method: "POST", body: JSON.stringify({ tieu_de: $("#tieu-de").value || "Bóc âm " + new Date().toLocaleDateString("vi-VN"), noi_dung: vanBan(), nguon: NGUON_GHI }) }); toast(r.canh_bao ? r.canh_bao : `Đã lưu ${r.tep}` + (r.len_github ? " · đã đẩy lên GitHub, máy Mac kéo về là thấy" : " · chỉ trên VPS")); } catch (err) { toast(err.message); } b.disabled = false; return; }
+  if (x === "chuan_hoa" || x === "giao_trinh") {
+    b.disabled = true; const cu = b.textContent; b.textContent = "AI đang làm...";
+    try { const r = await api("/api/boc-am/ai", { method: "POST", body: JSON.stringify({ loai: x, van_ban: x === "chuan_hoa" ? vanBan(false) : vanBan() }) });
+      AI = { loai: x, van: r.van_ban }; $("#ai-ten").textContent = x === "chuan_hoa" ? "Bản đã chuẩn hoá" : "Bản giáo trình"; $("#ai-ra").textContent = r.van_ban; $("#ai-hop").hidden = false;
+      $("#ai-dung").textContent = x === "chuan_hoa" ? "Dùng bản này" : "Tải .md"; }
+    catch (err) { toast(err.message); }
+    b.disabled = false; b.textContent = cu;
+  }
+});
+$("#ai-dong").onclick = () => $("#ai-hop").hidden = true;
+$("#ai-dung").onclick = () => {
+  if (AI.loai === "giao_trinh") return tai(tenTep() + " - giáo trình.md", AI.van, "text/markdown");
+  const dong = AI.van.split("\n").map(s => s.trim()).filter(Boolean);
+  if (dong.length === DONG.filter(d => d.text.trim()).length) { let i = 0; DONG = DONG.filter(d => d.text.trim()).map(d => ({ t: d.t, text: dong[i++] })); }
+  else DONG = [{ t: 0, text: AI.van }];
+  ve(); luuMay(); $("#ai-hop").hidden = true; toast("Đã thay bằng bản chuẩn hoá.");
+};
+
+// ---------- từ riêng + bộ não ----------
+api("/api/boc-am/tu-dien").then(d => $("#tu").value = d.tu.join("\n")).catch(() => {});
+$("#luu-tu").onclick = async () => { const tu = $("#tu").value.split("\n").map(s => s.trim()).filter(Boolean); await api("/api/boc-am/tu-dien", { method: "POST", body: JSON.stringify({ tu }) }); toast(`Đã lưu ${tu.length} từ riêng (áp dụng từ lần nghe sau).`); };
+api("/api/nao").then(d => { const n = d.ds.find(x => x.id === d.dang_dung); $("#nao").textContent = n ? "Lưu vào: " + n.ten : ""; }).catch(() => {});
+</script>
+</body>
+</html>

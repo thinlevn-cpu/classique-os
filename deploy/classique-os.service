@@ -1,0 +1,17 @@
+# Mẫu systemd. Sửa User và đường dẫn rồi chép vào /etc/systemd/system/classique-os.service
+[Unit]
+Description=Classique OS
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=classique
+WorkingDirectory=/home/classique/classique-os
+Environment="PATH=/home/classique/classique-os/.venv/bin:/home/classique/.local/bin:/usr/local/bin:/usr/bin:/bin"
+ExecStart=/home/classique/classique-os/.venv/bin/python server.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

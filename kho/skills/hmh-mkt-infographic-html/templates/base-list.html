@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<!--
+  TEMPLATE: base-list  — infographic dạng "danh sách card dọc" (ladder / N bước / N điểm).
+  Đã verify render PNG nét trên máy này. Self-contained: CSS inline, icon = emoji, KHÔNG ảnh ngoài.
+
+  CÁCH DÙNG (AI):
+   1. Đổi ====NỘI DUNG==== : kicker, H1, sub, các .card, .insight, footer.
+   2. Đổi THEME: chỉ sửa khối :root bên dưới (xem references/design-principles.md mục Theme).
+   3. Số card linh hoạt 3–6. Mỗi card 1 ý (Proximity). Card chốt thêm class "peak" để nổi (Contrast).
+   4. Render: scripts/render-png.ps1 -Html <file> -Out <png>  (Height ~ 250 + 162*số_card + 220).
+-->
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  /* ===== THEME (đổi màu cả tấm ở đây) — mặc định: Tech tím-cyan ===== */
+  :root{
+    --p1:#6d28d9;   /* tím đậm (badge) */
+    --p2:#7c3aed;   /* tím */
+    --c1:#22d3ee;   /* cyan nhấn */
+    --gold:#fbbf24; /* vàng — số liệu / điểm chốt */
+    --line:rgba(124,58,237,.35);
+    --bgA:#0b0c22; --bgB:#111338;        /* nền gradient */
+    --glowP:rgba(124,58,237,.45); --glowC:rgba(34,211,238,.22);
+    --ink:#eef0ff; --muted:#b9bee4; --muted2:#a9aed6;
+  }
+  html,body{ width:1080px; }
+  body{
+    font-family:"Segoe UI","Segoe UI Variable",Arial,sans-serif; color:var(--ink);
+    background:
+      radial-gradient(900px 500px at 80% -5%, var(--glowP), transparent 60%),
+      radial-gradient(700px 500px at -10% 20%, var(--glowC), transparent 55%),
+      linear-gradient(180deg,var(--bgA) 0%, var(--bgB) 55%, var(--bgA) 100%);
+    padding:54px 56px 40px;
+  }
+  /* ---------- HEADER ---------- */
+  .kicker{ display:inline-block; letter-spacing:3px; font-size:16px; font-weight:700;
+    color:#c4b5fd; text-transform:uppercase; margin-bottom:14px; padding:7px 16px;
+    border:1px solid var(--line); border-radius:999px; background:rgba(124,58,237,.12); }
+  h1{ font-size:62px; line-height:1.04; font-weight:900; letter-spacing:-1px;
+    background:linear-gradient(92deg,#ffffff 10%, #c4b5fd 55%, var(--c1) 100%);
+    -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .sub{ margin-top:14px; font-size:23px; color:var(--muted2); font-weight:500; }
+  .sub b{ color:var(--gold); font-weight:800; }
+  .rule{ height:3px; width:100%; margin:26px 0 30px;
+    background:linear-gradient(90deg,var(--p2),var(--c1),transparent); border-radius:3px; }
+  /* ---------- CARDS (Repetition + Alignment) ---------- */
+  .card{ position:relative; display:flex; align-items:center; gap:26px; padding:24px 28px;
+    margin-bottom:18px; border-radius:20px;
+    background:linear-gradient(120deg, rgba(255,255,255,.07), rgba(255,255,255,.02));
+    border:1px solid var(--line);
+    box-shadow:0 10px 30px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.06); }
+  .badge{ flex:0 0 96px; height:96px; border-radius:18px; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; font-weight:900;
+    background:linear-gradient(160deg,var(--p1),#3b1d8f); border:1px solid rgba(196,181,253,.5);
+    box-shadow:0 8px 22px rgba(109,40,217,.5); }
+  .badge .t{ font-size:13px; letter-spacing:1px; color:#d9caff; font-weight:700; }
+  .badge .n{ font-size:46px; line-height:1; color:#fff; }
+  .emoji{ flex:0 0 64px; font-size:52px; text-align:center; font-family:"Segoe UI Emoji";
+    filter:drop-shadow(0 4px 10px rgba(0,0,0,.4)); }
+  .txt{ flex:1; }
+  .txt h2{ font-size:28px; font-weight:800; color:#fff; margin-bottom:6px; }
+  .txt p{ font-size:19px; line-height:1.42; color:var(--muted); }
+  .txt p b{ color:#fde68a; font-weight:700; }   /* nhấn từ khóa (Contrast) */
+  .card.peak{ background:linear-gradient(120deg, rgba(251,191,36,.16), rgba(124,58,237,.18));
+    border:1px solid rgba(251,191,36,.55);
+    box-shadow:0 12px 36px rgba(251,191,36,.18), inset 0 1px 0 rgba(255,255,255,.08); }
+  .card.peak .badge{ background:linear-gradient(160deg,#f59e0b,#b45309);
+    border-color:rgba(253,230,138,.7); box-shadow:0 8px 22px rgba(245,158,11,.55); }
+  /* ---------- INSIGHT (thông điệp lớn — 1 mỗi tấm) ---------- */
+  .insight{ margin-top:24px; padding:24px 28px; border-radius:20px; display:flex; align-items:center; gap:20px;
+    background:linear-gradient(120deg, rgba(34,211,238,.12), rgba(124,58,237,.14));
+    border:1px solid rgba(34,211,238,.4); }
+  .insight .ic{ font-size:46px; font-family:"Segoe UI Emoji"; }
+  .insight .it{ font-size:15px; letter-spacing:2px; font-weight:800; color:#67e8f9; text-transform:uppercase; }
+  .insight .ib{ font-size:24px; font-weight:800; color:#fff; line-height:1.3; margin-top:4px; }
+  .insight .ib span{ color:var(--gold); }
+  /* ---------- FOOTER (thương hiệu — Repetition) ---------- */
+  .foot{ margin-top:30px; display:flex; align-items:center; justify-content:space-between; }
+  .tags{ font-size:18px; font-weight:700; color:#9aa0cf; }
+  .tags b{ color:#c4b5fd; }
+  .handle{ font-size:22px; font-weight:900;
+    background:linear-gradient(92deg,var(--gold),#fde68a);
+    -webkit-background-clip:text; background-clip:text; color:transparent; }
+</style>
+</head>
+<body>
+  <!-- ====NỘI DUNG: đổi từ đây==== -->
+  <div class="kicker">LĨNH VỰC · NHÓM</div>
+  <h1>TIÊU ĐỀ LỚN<br>DÒNG HAI</h1>
+  <div class="sub">Câu dẫn ngắn gợi <b>tò mò</b> đúng đối tượng.</div>
+  <div class="rule"></div>
+
+  <div class="card">
+    <div class="badge"><div class="t">BƯỚC</div><div class="n">1</div></div>
+    <div class="emoji">✋</div>
+    <div class="txt"><h2>Tiêu đề ý 1</h2><p>Mô tả ngắn, nhấn <b>từ khóa</b> quan trọng.</p></div>
+  </div>
+  <div class="card">
+    <div class="badge"><div class="t">BƯỚC</div><div class="n">2</div></div>
+    <div class="emoji">💬</div>
+    <div class="txt"><h2>Tiêu đề ý 2</h2><p>Mô tả ngắn, nhấn <b>từ khóa</b> quan trọng.</p></div>
+  </div>
+  <div class="card">
+    <div class="badge"><div class="t">BƯỚC</div><div class="n">3</div></div>
+    <div class="emoji">📚</div>
+    <div class="txt"><h2>Tiêu đề ý 3</h2><p>Mô tả ngắn, nhấn <b>từ khóa</b> quan trọng.</p></div>
+  </div>
+  <div class="card peak">
+    <div class="badge"><div class="t">BƯỚC</div><div class="n">4</div></div>
+    <div class="emoji">🚀</div>
+    <div class="txt"><h2>Tiêu đề ý chốt</h2><p>Ý quan trọng nhất — card này có class <b>peak</b> để nổi.</p></div>
+  </div>
+
+  <div class="insight">
+    <div class="ic">💡</div>
+    <div>
+      <div class="it">Insight lớn nhất</div>
+      <div class="ib">Một thông điệp đắt giá, có thể <span>nhấn vàng</span> vài từ chốt.</div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <div class="tags"><b>#Hashtag1</b> #Hashtag2 #Hashtag3</div>
+    <div class="handle">@Hoàng Minh Hóa</div>
+  </div>
+</body>
+</html>

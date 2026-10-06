@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{TITLE}}</title>
+<meta name="description" content="{{DESCRIPTION}}">
+<meta property="og:title" content="{{TITLE}}">
+<meta property="og:description" content="{{DESCRIPTION}}">
+<meta property="og:image" content="{{OG_IMAGE}}">
+<meta property="og:type" content="website">
+<link rel="icon" href="{{FAVICON}}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+{{TRACKING_HEAD}}
+<style>
+/* ==== Nhân bản 100% hình thái mẫu leadpage HMH (ảnh mẫu 03/08/2026): hero + nút đè ảnh →
+   headline đỏ → card nỗi đau → heading → ribbon → countdown tròn → form → footer đen → CTA bar ==== */
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Montserrat',sans-serif;background:#ececec;color:#333}
+.page{max-width:420px;margin:0 auto;background:#fff;box-shadow:0 0 24px rgba(0,0,0,.15);overflow:hidden}
+
+/* HERO: mockup full-width + nút TẢI NGAY đè lên ảnh */
+.hero{position:relative}
+.hero img{display:block;width:100%;height:auto}
+.hero .float-cta{position:absolute;left:calc(50% - 105px);bottom:26px;
+  display:flex;align-items:center;justify-content:center;width:210px;height:56px;
+  background:#e8231a;color:#fff;font-weight:800;font-size:19px;letter-spacing:.5px;
+  border-radius:999px;text-decoration:none;box-shadow:0 10px 24px rgba(0,0,0,.45);
+  animation:btnPulse 1.6s ease-in-out infinite}
+.hero .float-cta:after{content:"";position:absolute;inset:-3px;border-radius:999px;
+  border:3px solid rgba(232,35,26,.65);animation:btnRing 1.6s ease-out infinite}
+.hero .float-cta:active{transform:scale(.96)}
+/* Bìa nào kín tới sát đáy khung thì nút đè sẽ che mất chữ trên bìa.
+   Đặt "float_cta_position": "below" trong config để hạ nút xuống ngay DƯỚI ảnh. */
+.hero.cta-below{display:flex;flex-direction:column;align-items:center}
+.hero.cta-below .float-cta{position:relative;left:auto;bottom:auto;margin:16px 0 4px}
+
+/* HEADLINE đỏ gọi đúng đối tượng */
+.audience{padding:26px 22px 6px;text-align:center;color:#e02020;
+  font-size:23px;font-weight:800;line-height:1.4}
+
+/* CARD nỗi đau: bo tròn lớn + đổ bóng mềm, bullet icon sao đỏ, chữ justify */
+.pains{margin:18px 16px 8px;background:#fff;border-radius:28px;padding:24px 22px 26px;
+  box-shadow:0 14px 34px rgba(0,0,0,.16)}
+.pain{display:flex;gap:11px;align-items:flex-start;margin-top:16px}
+.pain:first-child{margin-top:0}
+.pain .st{flex:0 0 22px;margin-top:2px}
+.pain p{font-size:15.5px;line-height:1.55;text-align:justify;color:#333}
+
+/* HEADING đỏ */
+.helper{margin:22px 14px 0;text-align:center;color:#e02020;font-size:23px;font-weight:800;letter-spacing:.5px}
+
+/* RIBBON gradient đỏ→tím, viền gạch đứt trắng, hai đầu khoét chữ V */
+.ribbon{position:relative;margin:20px 8px 0;height:66px;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(95deg,#c9102c 0%,#8b1fa8 55%,#4a1fd8 100%);
+  clip-path:polygon(0 0,100% 0,calc(100% - 22px) 50%,100% 100%,0 100%,22px 50%)}
+.ribbon:before{content:"";position:absolute;inset:8px 34px;border-top:3px dashed rgba(255,255,255,.95);
+  border-bottom:3px dashed rgba(255,255,255,.95)}
+.ribbon h1{color:#fff;font-size:26px;font-weight:800;letter-spacing:1px}
+
+/* nhãn nhỏ + COUNTDOWN 4 vòng tròn đỏ */
+.gift{margin-top:18px;text-align:center;font-size:15px;font-weight:600;letter-spacing:1px;color:#222}
+.cd{margin:16px auto 0;display:flex;justify-content:center;gap:18px}
+.cd .u{display:flex;flex-direction:column;align-items:center;gap:8px}
+.cd .c{width:54px;height:54px;border-radius:50%;background:#d0021b;color:#fff;
+  display:flex;align-items:center;justify-content:center;font-size:21px;font-weight:800}
+.cd .l{font-size:15px;color:#222}
+
+/* FORM */
+form.lead{width:383px;max-width:calc(100% - 32px);margin:24px auto 0;position:relative}
+.row2{display:flex;gap:6px}
+form.lead input{width:100%;height:54px;padding:0 14px;font-family:'Montserrat',sans-serif;font-size:14px;
+  background:#fff;border:1px solid #d9d9d9;border-radius:8px;outline:none;color:#000}
+form.lead input:focus{border-color:rgba(199,23,12,.6)}
+.phone-wrap{position:relative;width:100%}
+.phone-wrap .pic{position:absolute;right:9px;top:50%;transform:translateY(-50%);width:26px;height:22px;
+  background:#e8231a;border-radius:5px;display:flex;align-items:center;justify-content:center}
+.phone-wrap .pic svg{width:14px;height:14px;fill:#fff}
+form.lead input.email{height:58px;margin-top:8px}
+form.lead .err{color:#C7170C;font-size:12px;margin:4px 2px 0;display:none}
+form.lead button{width:100%;height:52px;margin-top:14px;border:0;cursor:pointer;
+  font-family:'Montserrat',sans-serif;font-size:18px;font-weight:800;color:#fff;letter-spacing:.5px;
+  background:#c1130a;border-radius:8px;position:relative;overflow:hidden;
+  animation:btnPulse 2s ease-in-out infinite}
+form.lead button:before{content:"";position:absolute;top:0;left:-80%;width:45%;height:100%;
+  background:linear-gradient(115deg,transparent,rgba(255,255,255,.5),transparent);
+  transform:skewX(-20deg);animation:shine 2.8s ease-in-out infinite}
+form.lead button:active{transform:scale(.98)}
+.hp{position:absolute;left:-9999px;opacity:0;height:0;width:0}
+
+/* FOOTER đen: thương hiệu + 3 dòng liên hệ icon trắng */
+footer{background:#111;margin-top:30px;padding:24px 20px 0}
+.brand{text-align:center;font-family:'Playfair Display',serif;font-size:26px;font-weight:700;
+  letter-spacing:1px;color:#ff6b6b;margin-bottom:20px}
+.contact{display:flex;align-items:center;gap:13px;margin-bottom:15px}
+.contact svg{flex:0 0 22px;width:22px;height:22px;fill:#fff}
+.contact p{color:#fff;font-size:14.5px}
+.ctabar{background:#fff;margin:20px -20px 0;padding:6px 6px;display:flex;gap:4px}
+.ctabar a{flex:1;height:40px;display:flex;align-items:center;justify-content:center;
+  text-decoration:none;color:#fff;font-size:14px;font-weight:800;border-radius:6px}
+.ctabar a.b1{flex:1.33;background:#d0021b}
+.ctabar a.b2{background:#f4536b}
+
+/* ==== HIỆU ỨNG ĐỘNG ==== */
+@keyframes btnPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes btnRing{0%{transform:scale(1);opacity:.75}100%{transform:scale(1.4);opacity:0}}
+@keyframes shine{0%{left:-80%}55%{left:130%}100%{left:130%}}
+@keyframes wiggle{0%,82%,100%{transform:rotate(0)}85%{transform:rotate(-2.5deg)}88%{transform:rotate(2.5deg)}91%{transform:rotate(-1.5deg)}94%{transform:rotate(1.5deg)}97%{transform:rotate(0)}}
+@keyframes tickPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.14)}}
+@keyframes popIn{0%{transform:scale(.7);opacity:0}100%{transform:scale(1);opacity:1}}
+.ctabar a{animation:wiggle 4s ease-in-out infinite}
+.ctabar a.b2{animation-delay:.4s}
+.cd .u:last-child .c{animation:tickPulse 1s ease-in-out infinite}
+.ribbon:after{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;
+  background:linear-gradient(115deg,transparent,rgba(255,255,255,.35),transparent);
+  transform:skewX(-20deg);animation:shine 3.6s ease-in-out infinite}
+.overlay.show .popup{animation:popIn .35s cubic-bezier(.2,.9,.3,1.25)}
+
+/* Trang động: các khối trượt hiện dần khi cuộn tới (JS gắn .rv/.on) */
+.rv{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+.rv.on{opacity:1;transform:translateY(0)}
+
+/* (Da go CSS social proof pop-up: khong dung ten bia lam bang chung gia.) */
+
+/* Tôn trọng người dùng tắt animation */
+@media (prefers-reduced-motion: reduce){
+  *,*:before,*:after{animation:none !important;transition:none !important}
+  .rv{opacity:1;transform:none}
+}
+
+/* POPUP cảm ơn */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:99;padding:10px}
+.overlay.show{display:flex}
+/* VÁ(e): nút tải ebook ngay trong popup — chỉ hiện khi config có 'ebook_file_url' */
+/* Nút mời vào nhóm Zalo — hiện khi config có 'zalo_group_url' */
+.popup .zalo{display:flex;align-items:center;justify-content:center;gap:9px;margin:0 0 12px;
+  padding:15px 18px;border-radius:12px;text-decoration:none;background:#0068ff;color:#fff;
+  font-weight:800;font-size:16px;letter-spacing:.3px;box-shadow:0 8px 20px rgba(0,104,255,.32)}
+.popup .zalo svg{width:22px;height:22px;fill:#fff;flex:0 0 22px}
+.popup .zalo:active{transform:translateY(1px)}
+.popup .zalo-note{font-size:13px;color:#777;margin:-4px 0 12px;line-height:1.5}
+.popup .dl{display:block;margin:0 0 12px;padding:15px 18px;border-radius:12px;text-decoration:none;
+  background:linear-gradient(135deg,#e02020,#c1130a);color:#fff;font-weight:800;font-size:16px;
+  letter-spacing:.3px;box-shadow:0 8px 20px rgba(224,32,32,.32)}
+.popup{width:400px;max-width:100%;min-height:250px;background:#fff;border-radius:13px;
+  border:1px solid rgba(76,175,80,.8);box-shadow:4px 4px 9px 0 rgba(139,195,74,.2);
+  padding:21px 36px 24px;position:relative;display:flex;flex-direction:column}
+.popup h2{font-size:32px;font-weight:700;color:#454040}
+.popup p{font-size:16px;margin-top:16px;flex:1}
+.popup .close{align-self:flex-end;margin-top:18px;width:130px;height:40px;border:0;cursor:pointer;
+  font-family:'Montserrat',sans-serif;font-weight:700;color:#fff;background:rgba(76,175,80,.8);border-radius:6px}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HERO: chỉ bìa mockup + nút đè lên ảnh -->
+  <div class="hero{{HERO_CTA_CLASS}}">
+    <img src="{{HERO_IMG}}" alt="{{TITLE}}">
+    <a class="float-cta" href="#dang-ky">{{FLOAT_CTA}}</a>
+  </div>
+
+  <!-- HEADLINE gọi đúng đối tượng -->
+  <p class="audience">{{AUDIENCE_HEADLINE}}</p>
+
+  <!-- CARD nỗi đau -->
+  <div class="pains">
+{{PAIN_ITEMS}}
+  </div>
+
+  <p class="helper">{{HELPER_TEXT}}</p>
+
+  <!-- RIBBON + quà tặng + COUNTDOWN + FORM -->
+  <section id="dang-ky">
+    <div class="ribbon"><h1>{{RIBBON_TEXT}}</h1></div>
+    <p class="gift">{{GIFT_TEXT}}</p>
+
+    <div class="cd">
+      <div class="u"><div class="c" id="cd-d">00</div><div class="l">Ngày</div></div>
+      <div class="u"><div class="c" id="cd-h">00</div><div class="l">Giờ</div></div>
+      <div class="u"><div class="c" id="cd-m">00</div><div class="l">Phút</div></div>
+      <div class="u"><div class="c" id="cd-s">00</div><div class="l">Giây</div></div>
+    </div>
+
+    <form class="lead" id="leadform" novalidate>
+      <div class="row2">
+        <input type="text" name="full_name" placeholder="{{PH_NAME}}" required>
+        <div class="phone-wrap">
+          <input type="tel" name="phone_number" placeholder="{{PH_PHONE}}" required>
+          <div class="pic"><svg viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.3 0 .7-.2 1l-2.3 2.2z"/></svg></div>
+        </div>
+      </div>
+      <input class="email" type="email" name="email" placeholder="{{PH_EMAIL}}">
+      <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off">
+      <p class="err" id="err">Vui lòng kiểm tra lại Họ tên và Số điện thoại.</p>
+      <button type="submit">{{BUTTON_TEXT}}</button>
+    </form>
+  </section>
+
+  <!-- FOOTER đen -->
+  <footer>
+    <div class="brand">{{BRAND_NAME}}</div>
+{{FOOTER_ROWS}}
+    <div class="ctabar">
+      <a class="b1" href="#dang-ky">{{CTA1_TEXT}}</a>
+      <a class="b2" href="#dang-ky">{{CTA2_TEXT}}</a>
+    </div>
+  </footer>
+</div>
+
+<!-- POPUP cảm ơn -->
+<div class="overlay" id="overlay">
+  <div class="popup">
+    <h2>{{POPUP_TITLE}}</h2>
+    <p>{{POPUP_MESSAGE}}</p>
+{{ZALO_BLOCK}}
+{{EBOOK_DELIVERY}}
+    <button class="close" onclick="document.getElementById('overlay').classList.remove('show')">{{POPUP_BUTTON}}</button>
+  </div>
+</div>
+
+<!-- (Da go social proof pop-up theo yeu cau so 6.) -->
+
+<script>
+/* ===== Countdown evergreen (12h, lưu localStorage riêng từng khách) ===== */
+(function(){
+  var DUR = {{COUNTDOWN_MINUTES}} * 60 * 1000;
+  var KEY = 'cd_' + location.pathname;
+  var end = parseInt(localStorage.getItem(KEY) || '0', 10);
+  if (!end || end < Date.now()) { end = Date.now() + DUR; localStorage.setItem(KEY, end); }
+  function pad(n){ return (n<10?'0':'')+n; }
+  function tick(){
+    var t = end - Date.now();
+    if (t <= 0) { end = Date.now() + DUR; localStorage.setItem(KEY, end); t = DUR; }
+    var s = Math.floor(t/1000);
+    document.getElementById('cd-d').textContent = pad(Math.floor(s/86400));
+    document.getElementById('cd-h').textContent = pad(Math.floor(s%86400/3600));
+    document.getElementById('cd-m').textContent = pad(Math.floor(s%3600/60));
+    document.getElementById('cd-s').textContent = pad(s%60);
+  }
+  tick(); setInterval(tick, 1000);
+})();
+
+/* ===== BẮT NGUỒN KHÁCH (UTM) — chạy NGAY khi trang mở =====
+   Lưu vào sessionStorage ở LƯỢT ĐẦU. Khách F5, bấm lòng vòng, quay lại
+   → vẫn giữ nguyên nguồn gốc, không bị ghi đè thành 'truc-tiep'. */
+var LEAD_SRC = (function(){
+  var KEY = 'leadsrc_' + location.pathname;
+  var q = new URLSearchParams(location.search);
+  var g = function(k){ return (q.get(k) || '').trim().slice(0, 200); };
+
+  /* Nguồn đọc được ở CHÍNH lượt này */
+  var now = {
+    utm_source:   g('utm_source'),
+    utm_medium:   g('utm_medium'),
+    utm_campaign: g('utm_campaign'),
+    utm_content:  g('utm_content'),
+    utm_term:     g('utm_term'),
+    click_id:     g('fbclid') || g('ttclid') || g('gclid'),
+    click_id_type: g('fbclid') ? 'fbclid' : (g('ttclid') ? 'ttclid' : (g('gclid') ? 'gclid' : '')),
+    referrer:     (document.referrer || '').slice(0, 300),
+    landing_url:  location.href.slice(0, 500)
+  };
+  var nowThat = !!(now.utm_source || now.click_id);   /* lượt này có nguồn THẬT không */
+
+  var saved = null;
+  try { saved = JSON.parse(sessionStorage.getItem(KEY) || 'null'); } catch(_) {}
+  var savedThat = !!(saved && ((saved.utm_source && saved.utm_source !== 'truc-tiep') || saved.click_id));
+
+  /* Luật: nguồn THẬT ghi được trước đó KHÔNG BAO GIỜ bị ghi đè (khách F5, bấm lòng vòng
+     vẫn giữ nguyên nguồn). Nhưng nếu bản đã lưu chỉ là 'truc-tiep' — tức chưa từng có
+     nguồn thật — mà lượt này khách bấm từ quảng cáo vào, thì PHẢI nâng lên nguồn thật,
+     nếu không công của quảng cáo bị tính nhầm thành khách vào thẳng. */
+  if (saved && (savedThat || !nowThat)) { return saved; }
+
+  if (!now.utm_source) {
+    var rd = '';
+    try { if (document.referrer) { rd = new URL(document.referrer).hostname.replace(/^www\./,''); } } catch(_) {}
+    var ngoai = rd && rd !== location.hostname;
+    now.utm_source = ngoai ? rd : 'truc-tiep';
+    if (!now.utm_medium) { now.utm_medium = ngoai ? 'referral' : 'truc-tiep'; }
+  }
+  try { sessionStorage.setItem(KEY, JSON.stringify(now)); } catch(_) {}
+  return now;
+})();
+
+/* ===== Form: validate SĐT VN → POST endpoint → tracking → popup ===== */
+(function(){
+  var PHONE_RE = /^(\+84|84|0)(3([2-9])|5(2|5|6|8|9)|7(0|[6-9])|8([1-9])|9([0-4]|[6-9]))([0-9]{7})$/;
+  var ENDPOINT = "{{FORM_ENDPOINT}}";
+  var REDIRECT = "{{SUCCESS_REDIRECT}}";
+  var form = document.getElementById('leadform');
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var f = new FormData(form);
+    if (f.get('website')) return; /* honeypot chống spam */
+    var name = (f.get('full_name')||'').trim();
+    var phone = (f.get('phone_number')||'').replace(/[\s.-]/g,'');
+    var err = document.getElementById('err');
+    if (!name || !PHONE_RE.test(phone)) { err.style.display='block'; return; }
+    err.style.display='none';
+    var data = { full_name:name, phone_number:phone, email:(f.get('email')||'').trim(),
+                 page:"{{PAGE_SLUG}}", ebook:"{{EBOOK_NAME_JS}}",
+                 url:location.href, ts:new Date().toISOString(),
+                 website:(f.get('website')||'') };
+    for (var sk in LEAD_SRC) { if (Object.prototype.hasOwnProperty.call(LEAD_SRC, sk)) { data[sk] = LEAD_SRC[sk]; } }
+    var btn = form.querySelector('button'); btn.disabled = true; btn.textContent = 'Đang gửi...';
+    var done = function(){
+      try{ if (window.fbq) fbq('track','CompleteRegistration',{value:{{CONVERSION_VALUE}},currency:'VND'}); }catch(_){}
+      try{ if (window.gtag) gtag('event','generate_lead',{value:{{CONVERSION_VALUE}},currency:'VND'}); }catch(_){}
+      try{ if (window.ttq) ttq.track('CompleteRegistration',{value:{{CONVERSION_VALUE}},currency:'VND'}); }catch(_){}
+      if (REDIRECT) { location.href = REDIRECT; return; }
+      form.reset(); btn.disabled=false; btn.textContent="{{BUTTON_TEXT_JS}}";
+      document.getElementById('overlay').classList.add('show');
+    };
+    if (!ENDPOINT) { console.warn('FORM_ENDPOINT trống — lead không được lưu'); done(); return; }
+    /* VÁ(d): KHÔNG gửi Content-Type → body là text/plain (CORS-safelisted) → không preflight.
+       Máy chủ tự JSON.parse, không phụ thuộc header. */
+    /* VÁ(b): fetch() KHÔNG reject khi HTTP 400/500 → phải tự kiểm r.ok,
+       nếu không popup 'Cảm ơn' vẫn hiện dù lead đã rớt. */
+    fetch(ENDPOINT, {method:'POST', body:JSON.stringify(data)})
+      .then(function(r){
+        if (!r.ok) { return r.text().then(function(t){ throw new Error(r.status + ' ' + t); }); }
+        done();
+      })
+      .catch(function(e){ btn.disabled=false; btn.textContent="{{BUTTON_TEXT_JS}}";
+        console.error('Lead submit failed:', e);
+        alert('Gửi chưa thành công, anh/chị vui lòng thử lại hoặc gọi hotline.'); });
+  });
+})();
+
+/* ===== Trang động: các khối trượt hiện dần khi cuộn tới ===== */
+(function(){
+  var els = document.querySelectorAll('.audience,.pains,.helper,.ribbon,.gift,.cd,#leadform,.brand,.contact');
+  for (var i = 0; i < els.length; i++) els[i].classList.add('rv');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if (en.isIntersecting) { en.target.classList.add('on'); io.unobserve(en.target); }
+      });
+    }, {threshold:.15});
+    for (var j = 0; j < els.length; j++) io.observe(els[j]);
+  } else {
+    for (var k = 0; k < els.length; k++) els[k].classList.add('on');
+  }
+})();
+
+/* (Da go JS social proof pop-up - yeu cau so 6.) */
+</script>
+</body>
+</html>

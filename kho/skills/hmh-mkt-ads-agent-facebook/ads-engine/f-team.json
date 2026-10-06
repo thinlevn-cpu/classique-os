@@ -1,0 +1,7 @@
+[
+  {"name":"Tên","type":"text"},
+  {"name":"Loại","type":"select","options":[{"name":"Agent (đội quân)"},{"name":"Skill marketing"},{"name":"Module / Hạ tầng"}]},
+  {"name":"Vai trò","type":"text"},
+  {"name":"File / Skill / Nguồn","type":"text"},
+  {"name":"Trạng thái","type":"select","options":[{"name":"Đã chạy thật"},{"name":"Sẵn sàng"},{"name":"Cần build/wiring"}]}
+]

@@ -1,0 +1,9 @@
+[
+  {"name":"Ngành","type":"text"},
+  {"name":"Tỷ lệ chat to đơn","type":"number"},
+  {"name":"Tỷ lệ lead to đơn","type":"number"},
+  {"name":"Lợi nhuận muốn giữ","type":"number"},
+  {"name":"Benchmark CTR tối thiểu","type":"number"},
+  {"name":"Ghi chú","type":"text"},
+  {"name":"Hook gợi ý","type":"text"}
+]

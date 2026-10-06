@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Đăng nhập · Classique OS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@800&family=Exo+2:wght@600&family=Be+Vietnam+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/dang-nhap.css?v=1791091516">
+</head>
+<body>
+<canvas id="nen"></canvas>
+<main>
+  <canvas class="core" id="loi-core"></canvas>
+  <h1>CLASSIQUE OS</h1>
+  <p class="sub"><b>AI CORE · ONLINE</b> · Buồng lái điều hành doanh nghiệp</p>
+  <form id="f" class="card" autocomplete="on">
+    <label><span>Tài khoản</span><input name="tai_khoan" autocomplete="username" required autofocus></label>
+    <label><span>Mật khẩu</span><input name="mat_khau" type="password" autocomplete="current-password" required></label>
+    <label class="nho"><input type="checkbox" name="nho" checked><i></i>Ghi nhớ 30 ngày</label>
+    <button>Đăng nhập</button>
+    <p class="loi" id="loi" role="alert"></p>
+  </form>
+  <footer>Dữ liệu trên Lark Base · Kết nối bảo mật</footer>
+</main>
+<script src="/static/loi-ai.js?v=1791091516"></script>
+<script>LoiAI.nen(document.getElementById("nen")); LoiAI.gan(document.getElementById("loi-core"));</script>
+<script src="/static/dang-nhap.js?v=1791091516"></script>
+</body>
+</html>

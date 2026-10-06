@@ -1,0 +1,39 @@
+[
+ {
+  "src": "raw/anh-kiem-dinh-full/Cartier/vong-tay/vong-dinh-day-rose-fullset-2020-size-16/08.jpg",
+  "out": "cach-phan-biet-vong-cartier-juste-un-clou-that-gia-1-vong-juste-un-clou-tren-de.jpg",
+  "cx": 0.5,
+  "cy": 0.55,
+  "og": true
+ },
+ {
+  "src": "raw/anh-kiem-dinh-full/Cartier/vong-tay/dinh-yellow-size-16-ktra-ma-2022/19.jpg",
+  "out": "cach-phan-biet-vong-cartier-juste-un-clou-that-gia-2-dau-dinh-va-ranh-than.jpg",
+  "cx": 0.5,
+  "cy": 0.45
+ },
+ {
+  "src": "raw/anh-kiem-dinh-full/Cartier/vong-tay/dinh-yellow-size-16-ktra-ma-2022/20.jpg",
+  "out": "cach-phan-biet-vong-cartier-juste-un-clou-that-gia-3-mui-dinh-vat-canh.jpg",
+  "cx": 0.5,
+  "cy": 0.5
+ },
+ {
+  "src": "output/2026-09-16-dang-bai-juste-un-clou/che/khac-serial.jpg",
+  "out": "cach-phan-biet-vong-cartier-juste-un-clou-that-gia-4-chu-khac-cartier-750-serial.jpg",
+  "cx": 0.5,
+  "cy": 0.55
+ },
+ {
+  "src": "raw/anh-kiem-dinh-full/Cartier/vong-tay/vong-dinh-day-rose-fullset-2020-size-16/15.jpg",
+  "out": "cach-phan-biet-vong-cartier-juste-un-clou-that-gia-5-do-cong-va-khe-ho-hai-dau.jpg",
+  "cx": 0.5,
+  "cy": 0.5
+ },
+ {
+  "src": "output/2026-09-16-dang-bai-juste-un-clou/che/so-cert.jpg",
+  "out": "cach-phan-biet-vong-cartier-juste-un-clou-that-gia-6-so-chung-nhan-cartier.jpg",
+  "cx": 0.45,
+  "cy": 0.5
+ }
+]

@@ -1,0 +1,20 @@
+[
+  {"name":"Tên lệnh / Sản phẩm","type":"text"},
+  {"name":"Ngày chạy","type":"text"},
+  {"name":"Mức độ chiến dịch","type":"select","options":[{"name":"Nhận biết (Awareness)"},{"name":"Tương tác (Engagement)"},{"name":"Chuyển đổi (Conversion)"}]},
+  {"name":"Chủ đích quảng cáo","type":"text"},
+  {"name":"Ngân sách ngày","type":"number","style":{"type":"currency","precision":0,"currency_code":"VND"}},
+  {"name":"Chế độ ngân sách","type":"select","options":[{"name":"ABO (ngân sách ở nhóm)"},{"name":"CBO/Advantage (ngân sách ở chiến dịch)"}]},
+  {"name":"Số nhóm quảng cáo","type":"number"},
+  {"name":"Số bài quảng cáo","type":"number"},
+  {"name":"Đối tượng xem (mô tả)","type":"text"},
+  {"name":"Link quảng cáo (nếu chuyển đổi)","type":"text"},
+  {"name":"Khu vực chạy","type":"text"},
+  {"name":"Tuổi từ","type":"number"},
+  {"name":"Tuổi đến","type":"number"},
+  {"name":"Giới tính","type":"select","options":[{"name":"Tất cả"},{"name":"Nam"},{"name":"Nữ"}]},
+  {"name":"Nhóm đối tượng / Tệp","type":"text"},
+  {"name":"Góc hook mong muốn","type":"text"},
+  {"name":"Ghi chú thêm","type":"text"},
+  {"name":"Trạng thái","type":"select","options":[{"name":"1. Chờ xử lý"},{"name":"2. Đang soạn content"},{"name":"3. Đang setup Base"},{"name":"4. Chờ anh duyệt"},{"name":"5. Đã duyệt - lên ads"}]}
+]

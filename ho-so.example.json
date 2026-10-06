@@ -1,0 +1,47 @@
+{
+  "ten_chu": "Lan",
+  "goi_chu": "chị",
+  "doanh_nghiep": "Tiệm Hoa Lan",
+  "mo_ta_doanh_nghiep": "bán hoa tươi và quà tặng online",
+  "tu_rieng": [
+    "Tiệm Hoa Lan",
+    "hoa sáp",
+    "lẵng khai trương"
+  ],
+  "lark": {
+    "ten_base": "CRM của tiệm",
+    "phan_he": {
+      "1": "Thiết lập & Kho",
+      "2": "Bán hàng",
+      "4": "Công việc",
+      "6": "Nhân sự & Thu chi",
+      "17": "Lead",
+      "18": "SEO"
+    },
+    "phan_he_tay": {
+      "Sản phẩm": "1"
+    },
+    "chi_doc_tien_to": [],
+    "bang_chinh": [
+      {
+        "ten": "2.3 Đơn hàng",
+        "id": "tblXXXXXXXXXXXXX"
+      },
+      {
+        "ten": "2.4 Khách hàng",
+        "id": "tblXXXXXXXXXXXXX"
+      }
+    ],
+    "bang": {
+      "don": "tblXXXXXXXXXXXXX",
+      "khach": "tblXXXXXXXXXXXXX",
+      "lead": "tblXXXXXXXXXXXXX",
+      "sp": "tblXXXXXXXXXXXXX",
+      "viec": "tblXXXXXXXXXXXXX",
+      "seo": "tblXXXXXXXXXXXXX",
+      "nhat_ky": "tblXXXXXXXXXXXXX",
+      "thu_chi": "tblXXXXXXXXXXXXX",
+      "dong_tien": "tblXXXXXXXXXXXXX"
+    }
+  }
+}

@@ -1,0 +1,10 @@
+[
+  {"name":"Tên creative","type":"text"},
+  {"name":"Chiến dịch","type":"text"},
+  {"name":"Góc hook","type":"select","options":[{"name":"Nỗi đau"},{"name":"Khát khao / Kết quả"},{"name":"Phản bác từ chối"}]},
+  {"name":"Caption","type":"text"},
+  {"name":"Link hình/video","type":"text"},
+  {"name":"Trạng thái","type":"select","options":[{"name":"Bật"},{"name":"Tắt"}]},
+  {"name":"CTR","type":"number"},
+  {"name":"CPMC","type":"number"}
+]

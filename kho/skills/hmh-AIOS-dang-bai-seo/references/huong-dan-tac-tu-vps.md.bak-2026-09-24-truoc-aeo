@@ -1,0 +1,65 @@
+# Hướng dẫn trợ lý viết bài SEO tự động trên VPS (17/09/2026)
+
+Dựng từ `output/2026-09-17-viet-chuoi-bai-seo/HUONG-DAN-TAC-TU.md` (15 bài đầu chủ nhân đã duyệt) cho lịch chạy đêm trên VPS.
+Thư mục gốc dự án = thư mục đang chạy (`~/new-brain` trên VPS). Chạy KHÔNG có người: không hỏi lại, tự quyết theo sổ chính sách, việc chưa chắc thì ghi vào báo cáo.
+
+Script gọi bạn đã chạy `select-article.mjs`: thư mục bài `<THƯ MỤC BÀI>` có sẵn `brief.json` (brief từ Lark Base 18.1, có `record_id`, `slug`) và có thể có `img-base/` (ảnh đính kèm Base).
+
+## Đọc trước khi viết (bắt buộc)
+1. `<THƯ MỤC BÀI>/brief.json`.
+2. `.claude/skills/hmh-AIOS-dang-bai-seo/SKILL.md` (Bước 2) + `references/seo-blog-checklist.md` + `references/nguon-anh.md`.
+3. `CLAUDE.md` mục 11 "Chuẩn nội dung EEAT & YMYL" (thắng checklist khi lệch).
+4. `wiki/concepts/Sổ chính sách cho nội dung.md` — câu trả lời chính sách chủ nhân đã chốt (A23 chỉ thu mua/ký gửi/thẩm định, không bán lẻ trưng bày; cách nhận tiền; không thu nhẫn chế tác...). Viết khẳng định theo sổ, không dè dặt.
+5. Bài mẫu học giọng văn + cấu trúc HTML: `references/bai-mau/cach-phan-biet-vong-cartier-juste-un-clou-that-gia.html`, `references/bai-mau/spec-v2.json`, `references/bai-mau/manifest.json`. Bài tin tức ảnh nguồn ngoài: `references/bai-mau/spec-tin-tuc.json`.
+6. Chất liệu thật (dùng grep, đừng đọc hết file lớn): `wiki/sources/VOC 63.585 câu inbox thật.md`, `wiki/analyses/20 câu hỏi khách thật trước trong sau mua.md`, `wiki/sources/100 nỗi đau người pass đồ.md`, `wiki/sources/100 vấn nạn khách hàng trang sức hàng hiệu.md`, `wiki/sources/Nguồn web Cartier.md`, `wiki/sources/Nguồn web Van Cleef & Arpels.md`.
+
+## Luật cứng
+- TIÊU ĐỀ BÀI VIẾT HOA TOÀN BỘ (publisher tự ép; headline JSON-LD cũng viết hoa).
+- Tác giả: Anh Cả Hàng Hiệu (The Classique). Author box publisher tự chèn, không viết tay.
+- KHÔNG con số giá bán, mức giá thu mua, phí ký gửi, doanh thu, số liệu kinh doanh Classique. Không "triệu/tỷ/đ/USD" kèm số. Nói cách định giá, không nói mức giá. Không quote VOC có giá.
+- KHÔNG hứa hẹn giá trị ("chắc chắn lên giá", "giữ giá tuyệt đối", "đầu tư chắc thắng"). Không phán thật/giả qua ảnh; luôn nói kết luận cuối cần cầm món thật thẩm định. Bài nói giá trị bán lại thì 1-2 câu khuyến cáo cuối bài.
+- Case khách: ẩn danh hoàn toàn, KHÔNG bịa, không trộn ca. Không có chất liệu thật thì viết kinh nghiệm nghề chung, không dựng "chị A kể rằng".
+- Định vị chỉ hàng hiệu, không đầu tư/tài chính.
+- Tiếng Việt tự nhiên. **Xưng "bên em", gọi "anh chị"** (làn CỬA HÀNG, chốt 18/09), nhất quán cả bài, không kể chuyện cá nhân. CẤM em dash "—", emoji, văn AI sáo rỗng ("trong thế giới...", "hãy cùng khám phá", "không chỉ... mà còn" lặp). Luật giọng + CỔNG VĂN (4 chỉ số, chạy `van-hanh/cong-van/cham.py`, phải đạt mới đăng) ở mục "HÀNH VĂN, GIỌNG BLOG" của `references/seo-blog-checklist.md`. Văn mẫu dạng cặp đối chứng: `wiki/concepts/Kho đoạn mẫu.md`.
+- Tin tức/lịch sử/thông số hãng: kiểm chứng bằng WebSearch/WebFetch, không đoán; không bịa năm, số liệu. Chưa chắc thì bỏ.
+- Độ dài >= Số từ mục tiêu (mặc định 1500-2000 từ). Mật độ từ khoá chính ~1-2%, có trong 100 từ đầu, H1 đầu tiêu đề. Đoạn đầu 50-70 từ trả lời thẳng (AI Overview). FAQ cuối bài nếu brief có/Schema FAQ.
+- Internal link 2-6: chỉ URL classique.vn trả 200 (kiểm bằng `curl -sI`). Ưu tiên bài anh em đã đăng cùng cụm (lấy danh sách bằng `curl -s "https://classique.vn/wp-json/wp/v2/posts?per_page=100&_fields=slug,title"`), anchor tự nhiên có từ khoá, không link chính mình. 1+ external link uy tín (trang hãng, GIA, Wikipedia...).
+- 2 CTA (giữa + cuối) có UTM: `?utm_source=blog&utm_medium=post&utm_campaign=<slug>&utm_content=cta-giua-bai|cta-cuoi-bai`. Đích: https://classique.vn/thu-mua-hang-hieu/ cho chuỗi thu mua; bài kiểm định/mua thì mời gửi ảnh cho bên em xem trước như bài mẫu.
+
+## Ảnh (tự lo, không hỏi)
+- Kho: `raw/kho-anh-classique/` (đọc README.md trong đó). Tìm món bằng `grep -i "<hãng>,<loại>" raw/kho-anh-classique/danh-muc.csv` hoặc `ls raw/kho-anh-classique/1-anh-goc/<Hãng>/<loại>/`.
+  - `1-anh-goc/.../kd-*` = ảnh phiếu kiểm định thật, hàng đã qua sử dụng (đúng nhất cho bài thật giả, đồ cũ).
+  - `1-anh-goc/.../sp-*` = ảnh chụp sản phẩm của đội media (hộp, cert, tổng thể).
+  - `3-anh-da-dang-web/` = ảnh đã lên bài khác: TRÁNH dùng lại cùng khung hình.
+  - Luôn dựng từ `1-anh-goc` (anh-4x3.py tự đóng mộc), không lấy `2-anh-co-moc` để khỏi mộc chồng mộc.
+- MỞ ẢNH RA XEM (Read tool) trước khi chọn; ảnh phải cho thấy đúng thứ mục đó nói. Không có ảnh đúng thì mục đó không có ảnh.
+- **CHE THÔNG TIN KHÁCH — đọc `van-hanh/cong-anh/QUY-CHUAN-ANH.md` mục 1 trước khi dựng ảnh.** Bảy thứ bắt buộc che: serial khắc trên món, serial + ngày mua trên sổ chứng nhận, dấu/tên cửa hàng bán lẻ gốc, mã hộp - mã vạch - QR, tên/SĐT/chữ viết tay của khách, hoá đơn. Che trên ẢNH GỐC bằng `python3 van-hanh/tool-dong-moc/che-vung.py <vào> <ra> x0,y0,x1,y1 ...` rồi mới dựng 4:3. Ảnh nào có giấy tờ (sổ, thẻ, tem hộp, hoá đơn) thì trong `manifest.json` ảnh đó phải có `"da_che": true`, nếu không cổng ảnh sẽ chặn không cho đăng.
+- **Che ôm sát đúng khung serial rồi tự nhìn lại.** Ảnh cận chữ khắc trên món và ảnh sổ chứng nhận lần nào cũng có serial. Vùng che là hình chữ nhật bao đúng dòng ký tự serial (hoặc đúng con dấu), chỉ chừa vài pixel cho kín chân chữ, KHÔNG che lan ra món hay giấy xung quanh (chủ nhân chốt 23/09/2026: ảnh vẫn phải xem được món). Một ảnh có nhiều chỗ lộ (serial trên món + dấu cửa hàng trên sổ) thì mỗi chỗ một vùng. Đo vùng bằng cách crop đúng toạ độ bằng PIL và Read lại trước khi che; che xong crop phóng to lại lần nữa: hở 1-2 chân ký tự là cổng tầng 2 chặn (sự cố 21/09 và 23/09/2026). Ảnh loại này không thật cần cho ý của mục thì bỏ hẳn.
+- Tự soi trước khi báo xong: `python3 van-hanh/cong-anh/soi-anh.py <THƯ MỤC BÀI>/img` phải in 0 ảnh bị chặn.
+- Bài thẩm định/so sánh: CHỈ ảnh thật, không AI.
+- Bài TIN TỨC có sản phẩm mới kho chưa có: lấy ảnh hãng trên báo, chỉ ảnh không có mộc bên khác, `"nguon": "<Hãng>"` trong spec (KHÔNG đóng mộc mình), caption kết bằng "Nguồn ảnh: <Hãng>, qua <link trang gốc>".
+- 4-8 ảnh. Dựng `<THƯ MỤC BÀI>/spec.json` rồi chạy: `python3 .claude/skills/hmh-AIOS-dang-bai-seo/scripts/anh-4x3.py <THƯ MỤC BÀI>/spec.json <THƯ MỤC BÀI>/img` (ảnh #1 thêm `"og": true`). Tên file `<slug>-<n>-<mo-ta-khong-dau>`.
+- HTML: ảnh #1 là featured, thân bài bắt đầu từ `__IMG2__`. `<figure><img src="__IMGn__" alt="tả đúng ảnh" width="1600" height="1200" loading="lazy" style="max-width:100%;height:auto;display:block"><figcaption>...</figcaption></figure>`.
+
+## Sản phẩm phải ra trong `<THƯ MỤC BÀI>`
+1. `<slug>.html` — chỉ thân bài, theo cấu trúc bài mẫu.
+2. `spec.json` + `img/` (ảnh đã dựng).
+3. `manifest.json` cùng dạng `references/bai-mau/manifest.json` (record_id, title, focus_keyword, meta_title, meta_description, slug, category, schema, images[{path,filename,alt}], og_image). Giữ đúng `record_id` của brief.
+   **Slug và tiêu đề:** thường giữ y như brief. RIÊNG dòng giữ chỗ của chuỗi tin tức (brief có slug kiểu `chon-theo-tin`, tiêu đề kiểu "Tin tức hàng hiệu tuần ... chọn tin khi viết"): BẮT BUỘC tự đặt `slug`, `title`, `meta_title`, `meta_description` theo đúng tin đã chọn, đặt tên file `.html`/`.md` theo slug mới. Để nguyên slug giữ chỗ là bài lên web với URL vô nghĩa (sự cố 20/09/2026: `/chon-theo-tin/`).
+4. `<slug>.md` — bản đọc cho chủ nhân: frontmatter `type: output`; tóm tắt (từ khoá, số từ đếm thật, mật độ, link, ảnh lấy từ thư mục nào, chất liệu thật dùng gì, điểm chưa chắc), rồi toàn văn bài dạng markdown. Sau đó chạy `python3 .claude/scripts/xuat-ket-qua.py <THƯ MỤC BÀI>/<slug>.md` để ra .docx + .pdf.
+5. Tự rà "RÀ CUỐI TRƯỚC KHI PUBLISH" trong checklist; grep bài để chắc không có "—", emoji, số kèm triệu/tỷ/đ/USD.
+6. Thử publisher: `node .claude/skills/hmh-AIOS-dang-bai-seo/scripts/publish-wordpress.mjs --manifest <THƯ MỤC BÀI>/manifest.json --html <THƯ MỤC BÀI>/<slug>.html --dry-run` phải in `PUBLISH_OK __DRYRUN__`. Lỗi do manifest thì sửa manifest.
+
+## SỬA BẢN CŨ (khi prompt ghi "làm theo mục SỬA BẢN CŨ")
+Thư mục bài đã có bản viết lần trước (`.html`, `.md`, `manifest.json`, `spec.json`, `img/`) nhưng bị cổng chặn; prompt ghi lý do. KHÔNG viết lại bài.
+- Chặn vì ảnh: đọc `img/soi-bang-mat.json` xem ảnh nào lộ gì. Che lại cho đủ (theo mục ẢNH ở trên), hoặc thay bằng ảnh khác trong kho cho đúng mục đó (dựng lại qua `spec.json` + `anh-4x3.py`), hoặc gỡ figure nếu mục không cần ảnh. Sửa `manifest.json` và số `__IMGn__` cho khớp; ảnh #1 vẫn là featured.
+- Chặn vì cổng văn: sửa câu cho `van-hanh/cong-van/cham.py` đạt, giữ ý, ảnh, link.
+- Chặn lúc đăng: đọc lý do, sửa manifest/HTML cho đúng.
+- Sau đó làm lại bước 4-6 ở mục trên (cập nhật `.md`, xuất docx/pdf, rà cuối, dry-run) rồi in dòng BAI_XONG như thường.
+
+## KHÔNG được làm
+- Không đăng thật (chỉ `--dry-run`), không sửa Lark Base, không `git commit/push`, không sửa file ngoài `<THƯ MỤC BÀI>` (trừ đọc). Script gọi bạn sẽ đăng nháp + gửi thẻ duyệt.
+
+## Dòng cuối cùng (bắt buộc, script đọc dòng này)
+`BAI_XONG <slug> | <số từ> từ | <số ảnh> ảnh | <1 câu điều cần chủ nhân để ý, hoặc "không">`
+Không viết được bài đạt luật thì in `BAI_LOI <lý do ngắn>`.

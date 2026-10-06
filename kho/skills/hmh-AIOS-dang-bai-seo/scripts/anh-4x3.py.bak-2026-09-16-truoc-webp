@@ -1,0 +1,44 @@
+#!/usr/bin/env python3
+"""Chuẩn hoá ảnh bài viết về CÙNG khung 4:3 (1600x1200) rồi ĐÓNG MỘC The Classique.
+Dùng: python3 anh-4x3.py <spec.json> <out_dir> [--khong-moc] [--dam 0.25]
+spec.json = [{"src":"a.jpg","out":"slug-2-oc-vit.jpg","cx":0.5,"cy":0.5}, ...]  (cx,cy = tâm cắt, 0..1)
+
+Thứ tự bắt buộc: CẮT trước, ĐÓNG MỘC sau. Đóng mộc lên ảnh gốc rồi mới cắt 4:3
+thì mộc lệch tâm hoặc mất chữ khi tâm cắt không nằm giữa (chủ nhân chốt mộc 16/09/2026:
+logo favicon website, giữa ảnh, đậm 25%, kèm chữ THE CLASSIQUE).
+Nhận cả HEIC (tự chuyển bằng sips). Cần Pillow."""
+import sys, json, os, subprocess, tempfile
+from PIL import Image, ImageOps
+
+GOC = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..", ".."))
+sys.path.insert(0, os.path.join(GOC, "van-hanh", "tool-dong-moc"))
+import importlib.util
+_spec = importlib.util.spec_from_file_location(
+    "dong_moc", os.path.join(GOC, "van-hanh", "tool-dong-moc", "dong-moc.py"))
+_moc = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(_moc)
+
+W, H = 1600, 1200
+a = sys.argv
+spec = json.load(open(a[1])); out_dir = a[2]; os.makedirs(out_dir, exist_ok=True)
+co_moc = "--khong-moc" not in a
+dam = float(a[a.index("--dam") + 1]) if "--dam" in a else 0.25
+
+
+def mo(p):
+    if p.lower().endswith((".heic", ".heif")):
+        tmp = tempfile.mktemp(suffix=".png")
+        subprocess.run(["sips", "-s", "format", "png", p, "--out", tmp], check=True, capture_output=True)
+        p = tmp
+    return ImageOps.exif_transpose(Image.open(p)).convert("RGB")
+
+
+for it in spec:
+    im = mo(it["src"]); w, h = im.size
+    cw = min(w, int(h * 4 / 3)); ch = int(cw * 3 / 4)
+    cx = int(it.get("cx", 0.5) * w); cy = int(it.get("cy", 0.5) * h)
+    x0 = max(0, min(w - cw, cx - cw // 2)); y0 = max(0, min(h - ch, cy - ch // 2))
+    c = im.crop((x0, y0, x0 + cw, y0 + ch)).resize((W, H), Image.LANCZOS)
+    if co_moc:
+        c = _moc.dong_moc(c, dam=dam, vi_tri="giua", them_ten=True)
+    c.save(os.path.join(out_dir, it["out"]), quality=86, optimize=True)
+    print(it["out"], (w, h), "->", (W, H), "+ mộc" if co_moc else "")

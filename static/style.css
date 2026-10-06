@@ -1,0 +1,407 @@
+/* Classique OS - phong cách "siêu trí tuệ nhân tạo" theo thiet-ke/dashboard-v2.png + mobile-v2.png */
+:root{
+  --bg:#040912; --ink:#e6f4ff; --muted:#8ba6bd; --dim:#5a7389;
+  --cyan:#3fe8ff; --cyan2:#1fb6d9; --violet:#b86bff; --mag:#ff4fd8; --gold:#ffc45c;
+  --ok:#3dffb0; --bad:#ff5a6e; --warn:#ffb547; --blue:#5aa2ff;
+  --line:rgba(63,232,255,.35); --line2:rgba(120,190,230,.12);
+  --panel:linear-gradient(160deg,rgba(18,48,72,.55),rgba(8,20,34,.62) 55%,rgba(20,14,44,.55));
+  --cut:14px; --gold-soft:rgba(63,232,255,.12);
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:radial-gradient(1000px 600px at 50% 0%,#0c2340 0%,transparent 60%),radial-gradient(900px 600px at 100% 100%,#1a0f38 0%,transparent 60%),var(--bg);color:var(--ink);font:14px/1.5 "Be Vietnam Pro",system-ui,sans-serif;overflow:hidden}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.07;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='97'%3E%3Cpath d='M28 0l28 16v33L28 65 0 49V16zM28 65l28 16v33M28 65L0 81v33' fill='none' stroke='%233fe8ff' stroke-width='.8'/%3E%3C/svg%3E")}
+#nen{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+button{font:inherit;color:inherit;cursor:pointer}
+code{font:12.5px "JetBrains Mono",monospace;background:rgba(63,232,255,.08);padding:1px 6px;border-radius:4px;color:#bfefff}
+svg{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.meta{color:var(--muted);font-size:12.5px}
+.card,.hud{position:relative;background:var(--panel);clip-path:polygon(var(--cut) 0,100% 0,100% calc(100% - var(--cut)),calc(100% - var(--cut)) 100%,0 100%,0 var(--cut));padding:18px 20px;min-width:0}
+.card:before,.hud:before{content:"";position:absolute;inset:0;pointer-events:none;clip-path:inherit;padding:1px;background:linear-gradient(135deg,rgba(63,232,255,.85),rgba(63,232,255,.15) 30%,rgba(184,107,255,.15) 70%,rgba(184,107,255,.8));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+.card:after{content:"";position:absolute;left:var(--cut);top:0;width:60px;height:2px;background:var(--cyan);box-shadow:0 0 10px var(--cyan)}
+.app{position:relative;z-index:1;display:flex;height:calc(100vh - 64px)}
+.topbar{position:relative;z-index:2;height:64px;display:flex;align-items:center;gap:16px;padding:0 22px;border-bottom:1px solid var(--line2);background:linear-gradient(180deg,rgba(6,16,30,.9),rgba(6,16,30,.5))}
+.wordmark{font:800 24px "Orbitron",sans-serif;letter-spacing:.06em;background:linear-gradient(90deg,#ffd27a,#ffb347 40%,#3fe8ff 62%,#7ff4ff);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 10px rgba(63,232,255,.35));white-space:nowrap}
+.vach{width:1px;height:26px;background:var(--line2)}
+#chao{font:600 16px "Exo 2";white-space:nowrap}
+.search{flex:1;max-width:420px;margin-left:auto;display:flex;align-items:center;gap:10px;height:40px;padding:0 14px;border:1px solid var(--line);border-radius:8px;background:rgba(4,14,26,.6)}
+.search svg{width:17px;height:17px;color:var(--cyan)}
+.search input{flex:1;background:none;border:0;outline:none;color:var(--ink);font:inherit}
+.search input::placeholder{color:var(--dim)}
+.chip-st{display:flex;align-items:center;gap:7px;height:38px;padding:0 14px;border:1px solid var(--line2);border-radius:9px;background:rgba(10,24,40,.7);font-size:13.5px;white-space:nowrap}
+.den{width:8px;height:8px;border-radius:50%;background:var(--dim)}
+.den.ok{background:var(--ok);box-shadow:0 0 8px var(--ok)}
+.ai-btn{width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:radial-gradient(circle at 40% 35%,rgba(63,232,255,.5),rgba(184,107,255,.35) 60%,rgba(10,20,40,.9));color:#fff;font:800 12px "Orbitron";box-shadow:0 0 18px rgba(63,232,255,.4)}
+.rail{width:104px;flex:none;display:flex;flex-direction:column;align-items:stretch;gap:6px;padding:22px 8px 14px;border-right:1px solid var(--line2);background:rgba(4,12,22,.5)}
+.rail>button{display:flex;flex-direction:column;align-items:center;gap:6px;border:0;background:none;color:var(--muted);padding:12px 4px;border-radius:12px;font-size:13px;position:relative}
+.rail>button svg{width:28px;height:28px}
+.rail>button:hover{color:#cdeeff;background:rgba(63,232,255,.05)}
+.rail>button.on{color:var(--cyan)}
+.rail>button.on svg{filter:drop-shadow(0 0 8px rgba(63,232,255,.9))}
+.rail>button.on:before{content:"";position:absolute;left:-8px;top:12px;bottom:12px;width:3px;border-radius:3px;background:var(--cyan);box-shadow:0 0 12px var(--cyan)}
+.rail-foot{margin-top:auto;display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--muted);font-size:12px;padding-top:10px;border-top:1px solid var(--line2)}
+.link{border:0;background:none;color:var(--cyan);font-size:12px;padding:0}
+.center{flex:1;min-width:0;display:flex;flex-direction:column}
+.page{display:none;flex:1;min-height:0;overflow:auto;padding:18px 26px 40px}
+.page.on{display:block}
+#p-troly.on{display:flex;padding:0}
+.page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin:0 0 6px}
+h1{font:700 30px/1.15 "Exo 2";margin:0;letter-spacing:.02em;background:linear-gradient(90deg,#e6f9ff,#8fe9ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font:700 21px "Exo 2";margin:30px 0 4px;color:#cfefff}
+h3{font:600 16px "Exo 2";margin:0 0 12px;color:#dff6ff;letter-spacing:.01em}
+.head-act{display:flex;align-items:center;gap:12px}
+.lead{color:var(--muted);max-width:880px;margin:6px 0 18px}
+.tabs{display:flex;gap:6px;margin:12px 0 20px;overflow-x:auto;padding-bottom:2px}
+.tabs button{border:1px solid var(--line2);background:rgba(8,22,38,.6);color:var(--muted);font:600 14px "Exo 2";padding:8px 16px;border-radius:8px;white-space:nowrap}
+.tabs button.on{color:#04121e;background:linear-gradient(90deg,var(--cyan),#9af3ff);border-color:transparent;box-shadow:0 0 16px rgba(63,232,255,.45)}
+.grid{display:grid;gap:16px}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))} .g3{grid-template-columns:repeat(3,minmax(0,1fr))} .g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.r-main{grid-template-columns:2fr 1fr} .r-bot{grid-template-columns:1.25fr 1fr 1fr}
+.span2{grid-column:span 2}
+.tq{display:grid;grid-template-columns:1fr minmax(260px,1.05fr) 1fr;grid-template-areas:"k1 core k3" "k2 core k4" "chart chart gauge" "warn warn warn";gap:16px}
+.tq .k1{grid-area:k1}.tq .k2{grid-area:k2}.tq .k3{grid-area:k3;text-align:right}.tq .k4{grid-area:k4;text-align:right}
+.tq .k3 .sub,.tq .k4 .sub{justify-content:flex-end}
+.tq .core{grid-area:core;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:300px;position:relative}
+.tq .chart-c{grid-area:chart}.tq .gauge-c{grid-area:gauge}.tq .warn-c{grid-area:warn}
+.core-lbl{font:600 11.5px "Exo 2";letter-spacing:.1em;color:var(--gold);text-align:center;line-height:1.5;max-width:100%}
+.core-lbl b{color:var(--ok);font-weight:600}.core-lbl span{color:var(--cyan)}
+.core canvas.loi{width:100%;height:300px}
+.kpi .lbl{font:600 16px "Exo 2";color:#dff6ff}
+.kpi .val{font:700 clamp(30px,2.6vw,48px)/1.1 "Exo 2";margin:8px 0 6px;color:var(--cyan);text-shadow:0 0 18px rgba(63,232,255,.55);white-space:nowrap}
+.kpi .sub{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:12.5px;white-space:nowrap;overflow:hidden}
+.trend{display:inline-flex;align-items:center;gap:3px;font:700 13px "Exo 2";color:var(--ok);text-shadow:0 0 10px rgba(61,255,176,.5)}
+.trend.down{color:var(--bad);text-shadow:0 0 10px rgba(255,90,110,.5)} .trend.flat{color:var(--muted);text-shadow:none}
+.chart{width:100%;display:block}
+.chart text{fill:var(--muted);font:11.5px "Be Vietnam Pro"}
+.chart .grid-l{stroke:rgba(63,232,255,.08);stroke-width:1}
+.empty{color:var(--dim);font-size:13px;padding:18px 0;text-align:center}
+.list{display:flex;flex-direction:column}
+.li{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line2);font-size:13.5px}
+.li:last-child{border-bottom:0}
+.li .t{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.li .r{color:var(--muted);font-size:12.5px;white-space:nowrap}
+.dot{width:8px;height:8px;border-radius:50%;flex:none;background:var(--dim)}
+.dot.ok{background:var(--ok);box-shadow:0 0 8px var(--ok)} .dot.bad{background:var(--bad);box-shadow:0 0 8px var(--bad)} .dot.warn{background:var(--warn);box-shadow:0 0 8px var(--warn)} .dot.blue{background:var(--cyan);box-shadow:0 0 8px var(--cyan)} .dot.gold{background:var(--gold)}
+.canh-bao{display:flex;flex-direction:column;gap:8px}
+.cb{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:8px;border:1px solid;font-size:14px}
+.cb .dot{animation:nhap 1.6s infinite}
+.cb.do{border-color:rgba(255,90,110,.6);background:linear-gradient(90deg,rgba(255,90,110,.18),rgba(255,90,110,.04))}
+.cb.cam{border-color:rgba(255,160,70,.6);background:linear-gradient(90deg,rgba(255,160,70,.16),rgba(255,160,70,.03))}
+.cb.vang{border-color:rgba(255,215,90,.55);background:linear-gradient(90deg,rgba(255,215,90,.13),rgba(255,215,90,.02))}
+@keyframes nhap{50%{opacity:.35}}
+.big-num{font:700 clamp(32px,2.8vw,48px)/1 "Exo 2";color:var(--cyan);text-shadow:0 0 18px rgba(63,232,255,.5);margin:6px 0 14px;white-space:nowrap}
+.bar-line{height:8px;border-radius:8px;background:rgba(63,232,255,.08);overflow:hidden}
+.bar-line i{display:block;height:100%;border-radius:8px;background:linear-gradient(90deg,var(--cyan),var(--violet));box-shadow:0 0 10px rgba(63,232,255,.6)}
+.hbar{display:grid;grid-template-columns:120px 1fr auto;gap:10px;align-items:center;font-size:13px;margin:7px 0}
+.hbar .n{color:#cfe9f8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hbar .v{color:var(--muted);font-variant-numeric:tabular-nums}
+.note{background:rgba(255,181,71,.07);border:1px solid rgba(255,181,71,.3);border-radius:8px;padding:10px 14px;font-size:13px;color:#ffe2b0}
+.skeleton{color:var(--muted);padding:40px 0;font:600 14px "Exo 2";letter-spacing:.1em}
+table.tb{width:100%;border-collapse:collapse;font-size:13px}
+.tb th{text-align:left;color:var(--cyan);font-weight:500;padding:6px 8px;border-bottom:1px solid var(--line)}
+.tb td{padding:7px 8px;border-bottom:1px solid var(--line2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:240px}
+.num{font-variant-numeric:tabular-nums;text-align:right}
+.donut{display:flex;flex-direction:column;align-items:center;gap:8px}.donut svg{max-width:200px}.donut .lg{width:100%}
+.btn{border:1px solid var(--line);background:rgba(8,26,44,.6);color:var(--ink);padding:8px 14px;border-radius:8px;font-size:13.5px}
+.btn:hover{border-color:var(--cyan);box-shadow:0 0 12px rgba(63,232,255,.3)}
+.btn.gold{background:linear-gradient(90deg,var(--cyan),#9af3ff);color:#04121e;border:0;font-weight:700}
+.btn.ghost{background:none}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:0 0 18px}
+.bar input[type=search]{flex:1;min-width:200px;height:40px;padding:0 14px;border:1px solid var(--line);border-radius:8px;background:rgba(4,14,26,.6);color:var(--ink);font:inherit}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden;background:rgba(4,14,26,.6)}
+.seg button{border:0;background:none;padding:8px 13px;color:var(--muted);font-size:13px}
+.seg button.on{background:linear-gradient(90deg,rgba(63,232,255,.3),rgba(184,107,255,.3));color:#fff;font-weight:600;box-shadow:inset 0 0 0 1px var(--cyan)}
+.seg button.toan.on{box-shadow:inset 0 0 0 1px var(--bad);color:#ffd3d9}
+.switch{position:relative;display:inline-block;width:40px;height:22px;flex:none}
+.switch input{display:none}
+.switch i{position:absolute;inset:0;border-radius:20px;background:rgba(120,190,230,.15);border:1px solid var(--line2);transition:.2s;cursor:pointer}
+.switch i:after{content:"";position:absolute;width:15px;height:15px;border-radius:50%;background:#9bb;top:2.5px;left:3px;transition:.2s}
+.switch input:checked+i{background:rgba(63,232,255,.35);border-color:var(--cyan)} .switch input:checked+i:after{left:20px;background:#fff;box-shadow:0 0 8px var(--cyan)}
+.tags{display:flex;flex-wrap:wrap;gap:5px}
+.tag{font:500 11px "JetBrains Mono",monospace;border:1px solid var(--line2);border-radius:5px;padding:2px 7px;color:var(--muted)}
+.tag.gold{color:var(--cyan);border-color:var(--line)} .tag.warn{color:var(--warn);border-color:rgba(255,181,71,.35)} .tag.ok{color:var(--ok);border-color:rgba(61,255,176,.35)}
+.form{display:flex;flex-direction:column;gap:12px}
+.form label{display:flex;flex-direction:column;gap:6px;color:var(--muted);font-size:13px}
+.form input,.form select,.mcp-form input{height:40px;padding:0 12px;border:1px solid var(--line);border-radius:8px;background:rgba(4,14,26,.6);color:var(--ink);font:inherit}
+.form input[type=range]{height:auto;padding:0;accent-color:var(--cyan)}
+.mcp-form{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px}.mcp-form input{flex:1;min-width:150px}
+.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.opt{display:flex;flex-direction:column;gap:2px;border:1px solid var(--line2);border-radius:9px;padding:10px 12px;cursor:pointer;text-align:left;background:rgba(4,14,26,.5)}
+.opt b{font-size:13.5px} .opt span{font-size:12px;color:var(--muted)}
+.opt.on{border-color:var(--cyan);background:rgba(63,232,255,.1);box-shadow:0 0 14px rgba(63,232,255,.2)} .opt.on b{color:var(--cyan)}
+.opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-bottom:14px}
+.sk{display:flex;flex-direction:column;gap:9px;cursor:pointer;transition:transform .15s}
+.sk:hover{transform:translateY(-2px)}
+.sk b{font:700 17px "Exo 2";color:#e6f9ff}
+.sk .ds{font-size:12.5px;color:var(--muted);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.sk .act{display:flex;justify-content:space-between;align-items:center;margin-top:auto}
+.kn-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.kn-ten{font:700 18px "Exo 2"}
+.st-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:7px;background:var(--dim)}
+.st-dot.ok{background:var(--ok);box-shadow:0 0 8px var(--ok)} .st-dot.bad{background:var(--bad)}
+.mcp-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line2)}
+.mcp-row code{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.eng.chon{box-shadow:0 0 0 1px var(--cyan),0 0 26px rgba(63,232,255,.25)}
+.ev{display:flex;gap:12px;padding:8px 0;border-bottom:1px solid var(--line2);font-size:13px}
+.ev time{color:var(--muted);font:500 12px "JetBrains Mono",monospace;width:48px;flex:none}
+.ev .k{font:600 10.5px "JetBrains Mono",monospace;border-radius:4px;padding:2px 6px;height:fit-content;flex:none;width:82px;text-align:center;background:rgba(63,232,255,.08);color:var(--muted)}
+.ev .k.ghi{color:var(--ok)} .ev .k.de_xuat{color:var(--gold)} .ev .k.hoi{color:var(--cyan)}
+.stage{flex:1;position:relative;min-width:0;overflow:hidden}
+#graph{position:absolute;inset:0;width:100%;height:100%;cursor:grab}
+.legend{position:absolute;left:22px;top:12px;display:flex;flex-wrap:wrap;gap:6px;max-width:75%;z-index:2}
+.legend span{font-size:11.5px;color:var(--muted);border:1px solid var(--line2);background:rgba(4,14,26,.7);border-radius:20px;padding:3px 9px;cursor:pointer}
+.legend span i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px}
+.legend span.off{opacity:.35}
+.orb-wrap{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;pointer-events:none}
+.orb-wrap canvas.loi{width:260px;height:220px}
+.orb-st{margin-top:2px;font:700 13px "Exo 2";letter-spacing:.22em;color:var(--cyan);text-shadow:0 0 12px rgba(63,232,255,.7)}
+.orb-sub{font-size:12px;color:var(--muted);margin-top:3px}
+.hover-tip{position:absolute;pointer-events:none;background:rgba(6,18,32,.95);border:1px solid var(--line);border-radius:8px;padding:7px 10px;font-size:12px;display:none;max-width:260px;z-index:3}
+.ai{width:380px;flex:none;margin:14px 14px 14px 0;display:flex;flex-direction:column;min-height:0;position:relative;background:var(--panel);clip-path:polygon(18px 0,100% 0,100% calc(100% - 18px),calc(100% - 18px) 100%,0 100%,0 18px);transition:width .25s,margin .25s,opacity .2s}
+.ai:before{content:"";position:absolute;inset:0;pointer-events:none;clip-path:inherit;padding:1px;background:linear-gradient(160deg,rgba(63,232,255,.8),rgba(63,232,255,.1) 35%,rgba(184,107,255,.12) 70%,rgba(184,107,255,.75));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+.ai.dong{width:0;margin-right:0;opacity:0;overflow:hidden}
+.ai-orb{display:flex;flex-direction:column;align-items:center;padding:10px 16px 6px;position:relative}
+.ai-orb canvas.loi{width:190px;height:150px}
+.ai-orb #new-chat{position:absolute;right:10px;top:10px}
+.ai-name{display:flex;flex-direction:column;align-items:center;gap:1px;margin-top:-6px}
+.ai-name b{font:700 20px "Exo 2";color:#e6f9ff;text-shadow:0 0 12px rgba(63,232,255,.45)}
+.badge{font:500 11px "JetBrains Mono",monospace;color:var(--muted)}
+.ai-st{font:700 11px "Exo 2";letter-spacing:.2em;color:var(--cyan);margin-top:2px}
+.icon{border:0;background:none;color:var(--muted);font-size:18px;width:32px;height:32px;border-radius:8px}
+.icon:hover{background:rgba(63,232,255,.08);color:var(--ink)}
+.mode{display:flex;margin:6px 16px 8px;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:rgba(4,14,26,.6);padding:3px;gap:3px}
+.mode button{flex:1;border:0;background:none;color:var(--muted);font-size:13px;padding:7px 4px;border-radius:7px}
+.mode button.on{background:linear-gradient(90deg,rgba(63,232,255,.35),rgba(184,107,255,.35));color:#fff;font-weight:600;box-shadow:inset 0 0 0 1px var(--cyan),0 0 14px rgba(63,232,255,.35)}
+.log{flex:1;overflow:auto;padding:6px 16px 10px}
+.m{margin-bottom:12px;animation:in .2s ease}
+@keyframes in{from{opacity:0;transform:translateY(4px)}}
+.m.bot{background:linear-gradient(160deg,rgba(63,232,255,.10),rgba(184,107,255,.07));border:1px solid rgba(63,232,255,.4);border-radius:4px 14px 14px 14px;padding:11px 14px;font-size:13.5px;box-shadow:0 0 18px rgba(63,232,255,.08)}
+.m.me{margin-left:auto;max-width:86%;width:fit-content;background:rgba(18,40,60,.8);border:1px solid var(--line2);border-radius:14px 4px 14px 14px;padding:9px 13px;font-size:13.5px}
+.m p{margin:0 0 6px}.m p:last-child{margin:0}
+.m ul{margin:4px 0;padding-left:18px}
+.m li[data-q]{cursor:pointer;color:var(--cyan)}
+.m li[data-q]:hover{text-decoration:underline}
+.tool{font:500 11px "JetBrains Mono",monospace;color:var(--cyan);margin:0 0 6px}
+.tool.done{color:var(--dim)}
+.err{color:var(--bad)}
+.dx{border:1px solid rgba(255,196,92,.45);border-radius:10px;padding:11px 13px;margin:0 0 12px;background:rgba(255,196,92,.06)}
+.dx h4{margin:0 0 3px;font-size:13px;color:var(--gold)}
+.dx .why{font-size:12.5px;color:var(--muted);margin-bottom:6px}
+.dx table{width:100%;font-size:12.5px;border-collapse:collapse}
+.dx td{padding:3px 0;border-top:1px solid var(--line2);vertical-align:top}
+.dx td:first-child{color:var(--muted);width:38%}
+.dx .old{text-decoration:line-through;color:var(--dim);margin-right:6px}
+.dx .act{display:flex;gap:8px;margin-top:8px}
+.nghe{margin-top:8px;border:1px solid var(--line);background:rgba(63,232,255,.06);color:var(--cyan);border-radius:7px;padding:3px 10px;font-size:12px}
+.nghe.nhac{background:rgba(63,232,255,.2);animation:nhap 1.2s infinite}
+.song{height:44px;width:calc(100% - 32px);margin:0 16px}
+.composer{display:flex;align-items:center;gap:10px;margin:4px 14px 16px;border:1px solid var(--line);border-radius:12px;padding:6px 6px 6px 14px;background:rgba(4,14,26,.7)}
+.composer textarea{flex:1;resize:none;border:0;background:none;color:var(--ink);font:inherit;outline:none;max-height:140px;padding:7px 0}
+.mic{width:52px;height:52px;border-radius:50%;border:1px solid var(--cyan);background:radial-gradient(circle,rgba(63,232,255,.35),rgba(10,30,50,.9) 70%);color:#dffaff;display:grid;place-items:center;flex:none;box-shadow:0 0 18px rgba(63,232,255,.5),inset 0 0 12px rgba(63,232,255,.4)}
+.mic svg{width:22px;height:22px;stroke-width:2}
+.mic.on{border-color:var(--mag);box-shadow:0 0 0 4px rgba(255,79,216,.2),0 0 26px rgba(255,79,216,.7);animation:pulse 1s infinite}
+@keyframes pulse{50%{transform:scale(1.08)}}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(560px,100vw);background:rgba(6,16,30,.97);border-left:1px solid var(--line);transform:translateX(105%);transition:.22s;display:flex;flex-direction:column;z-index:30}
+.drawer.open{transform:none}
+.drawer-head,.drawer-foot{padding:14px 18px;border-bottom:1px solid var(--line2);display:flex;justify-content:space-between;align-items:center;gap:8px}
+.drawer-head b{font:700 19px "Exo 2"}
+.drawer-foot{border-top:1px solid var(--line2);border-bottom:0}
+.drawer-body{flex:1;overflow:auto;padding:14px 18px}
+.md-xem{white-space:pre-wrap;font:12.5px/1.6 "JetBrains Mono",monospace;color:#cfe3f0}
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:rgba(8,24,40,.97);border:1px solid var(--line);padding:10px 16px;border-radius:10px;opacity:0;pointer-events:none;transition:.2s;z-index:40;box-shadow:0 0 20px rgba(63,232,255,.25)}
+.toast.show{opacity:1}
+.tabbar{display:none}
+@media (max-width:1380px){.chip-st{display:none}}
+@media (max-width:1280px){.g4{grid-template-columns:repeat(2,minmax(0,1fr))}.r-main,.r-bot{grid-template-columns:1fr}.g3{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tq{grid-template-columns:1fr 1fr;grid-template-areas:"core core" "k1 k3" "k2 k4" "chart chart" "gauge gauge" "warn warn"}}
+@media (max-width:900px){
+  .topbar{height:56px;padding:0 14px;gap:10px}.wordmark{font-size:18px;margin:0 auto}.vach,#chao,.search,.chip-st,.ai-btn{display:none}
+  .app{height:calc(100vh - 56px - 70px)}
+  .rail{display:none}
+  .tabbar{display:flex;position:fixed;left:0;right:0;bottom:0;height:70px;z-index:20;background:linear-gradient(180deg,rgba(6,16,30,.85),rgba(4,10,20,.98));border-top:1px solid var(--line2)}
+  .tabbar button{flex:1;border:0;background:none;color:var(--muted);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:11.5px;position:relative}
+  .tabbar svg{width:24px;height:24px}
+  .tabbar button.on{color:var(--cyan);background:linear-gradient(180deg,rgba(63,232,255,.14),transparent)}
+  .tabbar button.on svg{filter:drop-shadow(0 0 8px var(--cyan))}
+  .tabbar button.on:before{content:"";position:absolute;top:0;left:22%;right:22%;height:2px;background:var(--cyan);box-shadow:0 0 10px var(--cyan)}
+  .page{padding:12px 14px 30px}
+  h1{font-size:24px}
+  .g2,.g3,.g4{grid-template-columns:1fr}.span2{grid-column:auto}
+  .tq{grid-template-columns:1fr 1fr;grid-template-areas:"core core" "k1 k3" "k2 k4" "chart chart" "gauge gauge" "warn warn";gap:10px}
+  .tq .core canvas.loi{height:230px}.kpi{padding:14px}.kpi .val{font-size:26px}.kpi .lbl{font-size:13.5px}
+  .ai{display:none}
+  body.p-troly .ai{display:flex;position:fixed;top:56px;left:0;right:0;bottom:70px;width:auto;margin:0;clip-path:none;background:transparent;z-index:5}
+  body.p-troly .ai:before{display:none}
+  body.p-troly .ai-orb canvas.loi{width:300px;height:230px}
+  body.p-troly #p-troly .stage{display:none}
+  .mode{margin:6px 14px 8px}
+}
+@media (max-width:900px){.ai-orb canvas.loi{width:150px;height:120px}body.p-troly .ai-orb canvas.loi{width:240px;height:190px}.tq .core canvas.loi{height:200px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+
+/* ---- cài đặt (thiet-ke/caidat-v2.png) ---- */
+.cd-wrap{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:18px;align-items:start}
+.cd-main{padding:24px 28px 28px;--cut:22px}
+.cd-main h1{margin-bottom:14px}
+.pills{display:flex;gap:10px;flex-wrap:wrap;padding-bottom:16px;border-bottom:1px solid var(--line2);margin-bottom:20px}
+.pills button{border:1px solid var(--line);background:rgba(8,26,44,.6);color:var(--muted);font:600 15px "Exo 2";padding:9px 26px;border-radius:999px}
+.pills button.on{color:#fff;background:linear-gradient(90deg,rgba(63,232,255,.32),rgba(63,232,255,.12));border-color:var(--cyan);box-shadow:0 0 16px rgba(63,232,255,.45),inset 0 0 12px rgba(63,232,255,.25)}
+.cd-h{font:700 20px "Exo 2";color:var(--cyan);margin:6px 0 14px;text-shadow:0 0 12px rgba(63,232,255,.35)}
+.cd-h+.cd-sub{margin-top:-10px}
+.cd-sub{color:var(--muted);font-size:13px;margin-bottom:14px}
+.mode-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-bottom:28px}
+.mcard{display:flex;align-items:center;gap:16px;padding:20px 18px;border:1px solid rgba(63,232,255,.25);background:linear-gradient(160deg,rgba(18,48,72,.5),rgba(10,20,36,.6));clip-path:polygon(14px 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%,0 14px);text-align:left;cursor:pointer;transition:.15s}
+.mcard svg{width:46px;height:46px;color:var(--cyan);flex:none;filter:drop-shadow(0 0 6px rgba(63,232,255,.5))}
+.mcard b{display:block;font:700 19px "Exo 2";color:#e6f9ff}
+.mcard span{font-size:13px;color:var(--muted)}
+.mcard:hover{border-color:var(--cyan)}
+.mcard.on{border:2px solid var(--cyan);box-shadow:0 0 22px rgba(63,232,255,.45),inset 0 0 24px rgba(63,232,255,.15);background:linear-gradient(160deg,rgba(30,90,120,.55),rgba(12,30,50,.7))}
+.voice-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:28px}
+.vcard{position:relative;display:flex;align-items:center;gap:12px;padding:14px 14px;border:1px solid rgba(63,232,255,.22);background:linear-gradient(160deg,rgba(18,48,72,.45),rgba(10,20,36,.6));clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);cursor:pointer;text-align:left;transition:.15s}
+.vcard .av{width:50px;height:50px;border-radius:50%;flex:none;display:grid;place-items:center;border:1px solid var(--line);background:radial-gradient(circle,rgba(63,232,255,.25),rgba(10,24,40,.9));color:var(--cyan)}
+.vcard .av svg{width:28px;height:28px}
+.vcard .av.tim{color:var(--violet);border-color:rgba(184,107,255,.5);background:radial-gradient(circle,rgba(184,107,255,.25),rgba(10,24,40,.9))}
+.vcard .tt{flex:1;min-width:0}
+.vcard b{display:block;font:700 17px "Exo 2";color:#e6f9ff}
+.vcard span{font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+.vcard .play{display:flex;flex-direction:column;align-items:center;gap:2px;border:0;background:none;color:var(--cyan);font-size:11px;flex:none}
+.vcard .play i{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--cyan);display:grid;place-items:center;font-style:normal;font-size:11px;box-shadow:0 0 8px rgba(63,232,255,.4)}
+.vcard.on{border:2px solid var(--cyan);box-shadow:0 0 20px rgba(63,232,255,.4)}
+.vcard.on:after{content:"✓";position:absolute;right:6px;top:4px;width:20px;height:20px;border-radius:50%;background:var(--cyan);color:#04121e;font:700 12px/20px "Exo 2";text-align:center;box-shadow:0 0 10px var(--cyan)}
+.tinh{display:grid;grid-template-columns:1.1fr .8fr 1.1fr;gap:28px;align-items:end}
+.tinh label{display:flex;flex-direction:column;gap:12px;color:#cfe9f8;font-size:15px}
+.tinh label b{color:var(--cyan)}
+.tinh input[type=range]{-webkit-appearance:none;appearance:none;height:6px;border-radius:6px;background:linear-gradient(90deg,var(--cyan) var(--p,50%),rgba(63,232,255,.15) var(--p,50%));outline:none}
+.tinh input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:#e6fbff;border:3px solid var(--cyan);box-shadow:0 0 12px var(--cyan);cursor:pointer}
+.tinh select{height:44px;padding:0 14px;border:1px solid var(--line);border-radius:8px;background:rgba(4,14,26,.7);color:var(--ink);font:500 15px "Be Vietnam Pro"}
+.on-off{width:84px;height:34px;border-radius:20px;border:1px solid var(--cyan);background:rgba(63,232,255,.2);color:#fff;font:700 12px "Exo 2";position:relative;text-align:left;padding-left:14px;box-shadow:0 0 12px rgba(63,232,255,.4)}
+.on-off:after{content:"";position:absolute;right:4px;top:3px;width:26px;height:26px;border-radius:50%;background:#fff;box-shadow:0 0 8px var(--cyan);transition:.2s}
+.on-off.tat{background:rgba(120,190,230,.1);border-color:var(--line2);padding-left:44px;color:var(--muted);box-shadow:none}
+.on-off.tat:after{right:auto;left:4px;background:#8aa}
+.cd-nho{padding:22px 20px;--cut:22px;position:sticky;top:0}
+.cd-nho h2{margin:0 0 4px;color:var(--cyan);text-shadow:0 0 12px rgba(63,232,255,.35)}
+.nho-ds{display:flex;flex-direction:column;gap:10px;max-height:52vh;overflow:auto;margin-bottom:14px}
+.nho-it{position:relative;padding:12px 34px 12px 14px;border:1px solid rgba(63,232,255,.35);background:linear-gradient(160deg,rgba(18,48,72,.6),rgba(10,20,36,.7));clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);font-size:14px;line-height:1.45}
+.nho-it small{display:block;color:var(--dim);font-size:11px;margin-top:4px}
+.nho-it button{position:absolute;right:6px;top:6px;border:0;background:none;color:var(--cyan);font-size:16px;width:24px;height:24px}
+.nho-them{display:flex;flex-direction:column;gap:8px}
+.nho-them input{height:40px;padding:0 12px;border:1px solid var(--line);border-radius:8px;background:rgba(4,14,26,.6);color:var(--ink);font:inherit}
+.nho-them .btn{height:46px;font-size:15px}
+/* nút đổi bộ não trong khung chat */
+.chip-model{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:rgba(4,14,26,.7);color:#cfefff;border-radius:999px;padding:3px 10px;font:500 11.5px "JetBrains Mono",monospace;margin-top:3px}
+.chip-model:hover{border-color:var(--cyan);box-shadow:0 0 10px rgba(63,232,255,.35)}
+.chip-model b{color:var(--cyan);font-size:10px}
+.pop{position:fixed;z-index:50;width:340px;max-height:70vh;overflow:auto;padding:14px;background:rgba(6,18,32,.98);border:1px solid var(--line);border-radius:12px;box-shadow:0 0 30px rgba(63,232,255,.25),0 20px 50px rgba(0,0,0,.6)}
+.pop h4{margin:8px 0 8px;font:700 12px "Exo 2";letter-spacing:.14em;color:var(--cyan)}
+.pop .eng-h{display:flex;justify-content:space-between;font:600 13.5px "Exo 2";margin:10px 0 6px;color:#e6f9ff}
+.pop .eng-h span{font:400 11.5px "Be Vietnam Pro";color:var(--muted)}
+.pop .mo{display:flex;flex-wrap:wrap;gap:6px}
+.pop .mo button{border:1px solid var(--line2);background:rgba(10,30,50,.7);color:#cfe3f0;border-radius:8px;padding:6px 11px;font-size:12.5px}
+.pop .mo button.on{border-color:var(--cyan);color:#fff;background:rgba(63,232,255,.18);box-shadow:0 0 10px rgba(63,232,255,.35)}
+.pop .mo button:disabled{opacity:.35;cursor:not-allowed}
+.pop .ghi{font-size:11.5px;color:var(--dim);margin-top:10px}
+@media (max-width:1280px){.cd-wrap{grid-template-columns:1fr}.cd-nho{position:static}.voice-cards,.mode-cards{grid-template-columns:repeat(2,minmax(0,1fr))}.tinh{grid-template-columns:1fr}}
+@media (max-width:900px){.voice-cards,.mode-cards{grid-template-columns:1fr}.pills button{padding:7px 14px;font-size:13.5px}.pop{left:12px!important;right:12px;width:auto}}
+/* trang Cài đặt cần chỗ: ẩn khung trợ lý (nút AI góc trên vẫn mở lại được) */
+body.p-caidat .ai:not(.mo-tay){display:none}
+.mode-cards{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.voice-cards{grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+.tinh{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+@media (max-width:1500px){.cd-wrap{grid-template-columns:1fr}.cd-nho{position:static}}
+
+.live-voices{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 18px}
+.live-voices .pill{padding:8px 16px;border-radius:999px;border:1px solid rgba(63,232,255,.3);background:rgba(4,14,26,.6);color:var(--ink,#e6f4ff);font:600 13px "Exo 2",sans-serif;cursor:pointer;letter-spacing:.04em}
+.live-voices .pill.on{background:linear-gradient(90deg,rgba(63,232,255,.25),rgba(184,107,255,.25));border-color:#3fe8ff;box-shadow:0 0 12px rgba(63,232,255,.35)}
+.mode{flex-wrap:wrap}
+
+.nao-luoi{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin:10px 0 16px}
+.nao-the{padding:18px;display:flex;flex-direction:column;gap:10px}
+.nao-the.on{box-shadow:0 0 0 1px #3fe8ff,0 0 24px rgba(63,232,255,.25)}
+.nao-dau{display:flex;align-items:center;gap:12px}.nao-dau b{display:block;font:700 16px "Exo 2",sans-serif}.nao-dau span{color:var(--muted,#8ba6bd);font-size:12.5px}
+.nao-dau .av{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:rgba(63,232,255,.1);border:1px solid rgba(63,232,255,.35)}
+.nao-dau svg{width:24px;height:24px;fill:none;stroke:#3fe8ff;stroke-width:1.6}
+.nao-dau svg path[d^="M16 3"]{fill:#3fe8ff;stroke:none}
+.nao-dung{margin-left:auto;font:700 10.5px "Exo 2";letter-spacing:.14em;color:#04121e;background:linear-gradient(90deg,#3fe8ff,#c9a6ff);padding:4px 9px;border-radius:999px;font-style:normal}
+.nao-so{display:flex;gap:18px;font-size:13px;color:var(--muted,#8ba6bd)}.nao-so b{color:#e6f4ff;font-size:17px}
+.nao-ls{font-size:12px;display:flex;flex-direction:column;gap:4px;border-top:1px solid rgba(63,232,255,.15);padding-top:8px}
+.nao-ls code{color:#3fe8ff}.nao-ls em{color:var(--muted,#8ba6bd);font-style:normal}
+.nao-ls .lk{background:none;border:0;color:#c9a6ff;cursor:pointer;font-size:14px;padding:0 4px}
+.nao-the .act{display:flex;gap:8px;flex-wrap:wrap}
+.nao-khoa{padding:16px;margin:10px 0;display:flex;flex-direction:column;gap:8px}.nao-khoa code{word-break:break-all;font-size:12px;color:#9af3ff;background:rgba(4,14,26,.7);padding:10px;border-radius:8px}
+.nao-them summary{cursor:pointer;color:#3fe8ff;font-weight:600;margin:6px 0}
+.nao-them form{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.nao-them input,.nao-them select{flex:1;min-width:180px;height:40px;border-radius:8px;border:1px solid rgba(63,232,255,.25);background:rgba(4,14,26,.7);color:#e6f4ff;padding:0 12px;font:inherit}
+
+.chip-nao{cursor:pointer;border:1px solid rgba(184,107,255,.55)!important;color:#efe2ff;font:inherit;display:inline-flex;align-items:center;gap:6px}
+.chip-nao svg{width:15px;height:15px;fill:none;stroke:#c9a6ff;stroke-width:1.7}
+.chip-nao b{color:#c9a6ff;font-size:10px}
+.chip-nao:hover{box-shadow:0 0 12px rgba(184,107,255,.45)}
+.pop .ghi a{color:var(--cyan);text-decoration:none}
+@media (max-width:1380px){.topbar .chip-st.chip-nao{display:inline-flex}}
+@media (max-width:900px){.topbar .chip-st.chip-nao{display:inline-flex;height:32px;padding:0 10px;font-size:12px;margin-left:auto}.topbar .wordmark{margin:0}}
+
+#models .eng{display:flex;flex-direction:column;gap:10px}
+#models .eng a{color:var(--cyan);text-decoration:none}
+#nao-trang{max-width:1200px}
+
+/* Models kiểu Javis */
+.md-muc{margin:6px 0 26px}.md-muc h3{font:700 15px "Exo 2";letter-spacing:.06em;color:var(--cyan);margin:0 0 12px}.md-muc h3 span{color:var(--muted);font:400 13px "Be Vietnam Pro";letter-spacing:0;margin-left:6px}
+.md-chinh{max-width:560px;padding:18px 20px;display:flex;flex-direction:column;gap:10px;align-items:flex-start}
+.md-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.md-top b{font:700 20px "JetBrains Mono",monospace;color:#e6f9ff}
+.md-chinh .row{display:flex;gap:8px}
+.prov-loai{font:600 10.5px "Exo 2";letter-spacing:.1em;text-transform:uppercase;color:#c9a6ff;border:1px solid rgba(184,107,255,.45);border-radius:999px;padding:2px 8px}
+.prov-ds{display:flex;flex-direction:column;gap:10px;max-width:860px}
+.prov{border:1px solid var(--line2);border-radius:12px;background:rgba(8,22,38,.65);padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.prov.main{border-color:var(--cyan);box-shadow:0 0 18px rgba(63,232,255,.18)}.prov.mo{opacity:.62}
+.prov-dau{display:flex;align-items:center;gap:12px}
+.khien svg{width:30px;height:30px;fill:none;stroke:#5c7690;stroke-width:1.6}.khien.on svg{stroke:var(--ok);filter:drop-shadow(0 0 6px rgba(61,255,176,.45))}
+.prov-tt{flex:1;min-width:0}.prov-ten{font:700 15px "Exo 2";display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.prov-st{font-size:12.5px;color:var(--muted)}.prov-st.on{color:var(--ok)}
+.prov-main{font:700 10.5px "Exo 2";letter-spacing:.14em;color:#04121e;background:linear-gradient(90deg,#3fe8ff,#c9a6ff);padding:4px 10px;border-radius:999px}
+.prov-act{display:flex;gap:8px;flex-wrap:wrap}.prov-act input{flex:1;min-width:200px;height:38px;border-radius:8px;border:1px solid var(--line);background:rgba(4,14,26,.7);color:#e6f4ff;padding:0 12px;font:inherit}
+.prov-ghi{font-size:12.5px;color:var(--muted)}.prov-ghi a{color:var(--cyan);text-decoration:none}.prov-ghi code{color:#9af3ff}
+.mpick{position:fixed;inset:0;z-index:60;background:rgba(2,8,16,.6);display:grid;place-items:center}
+.mpick[hidden]{display:none}
+.mpick-box{width:min(520px,calc(100vw - 32px));max-height:75vh;display:flex;flex-direction:column;gap:10px;padding:16px;background:rgba(6,18,32,.98);border:1px solid var(--line);border-radius:14px;box-shadow:0 0 40px rgba(63,232,255,.25)}
+.mpick-box input{height:42px;border-radius:9px;border:1px solid var(--line);background:rgba(4,14,26,.8);color:#e6f4ff;padding:0 14px;font:inherit}
+#mpick-ds{overflow:auto;display:flex;flex-direction:column;gap:3px}
+.mp-nha{font:700 12px "Exo 2";letter-spacing:.1em;color:var(--cyan);margin:10px 0 4px;text-transform:uppercase}.mp-nha .khoa{color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0}
+.mp-m{text-align:left;border:1px solid transparent;background:none;color:#d8ecf8;padding:8px 10px;border-radius:8px;font:13px "JetBrains Mono",monospace;cursor:pointer}
+.mp-m:hover{background:rgba(63,232,255,.1)}.mp-m.on{border-color:var(--cyan);background:rgba(63,232,255,.15)}
+/* chọn bộ não ngay trên trang Điều hành */
+.nao-seg{display:inline-flex;align-items:center;gap:4px;border:1px solid rgba(184,107,255,.5);border-radius:999px;padding:3px;background:rgba(10,20,40,.7)}
+.nao-seg-nhan{font:600 11px "Exo 2";letter-spacing:.12em;color:#c9a6ff;text-transform:uppercase;padding:0 8px 0 10px}
+.nao-seg button{border:0;background:none;color:var(--muted);font:600 13px "Exo 2";padding:6px 12px;border-radius:999px;cursor:pointer}
+.nao-seg button.on{color:#fff;background:linear-gradient(90deg,rgba(184,107,255,.45),rgba(63,232,255,.3));box-shadow:0 0 12px rgba(184,107,255,.4)}
+@media (max-width:900px){.page-head{flex-wrap:wrap}.head-act{flex-wrap:wrap}.nao-seg{order:-1}}
+
+/* Thư viện MCP */
+.mk-luoi{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin:8px 0 26px}
+.mk-the{padding:16px;display:flex;flex-direction:column;gap:10px}.mk-the.mo{opacity:.6}
+.mk-the .btn{align-self:flex-start}
+.mk-dau{display:flex;align-items:center;gap:12px}.mk-dau b{display:block;font:700 15px "Exo 2"}.mk-dau span{font-size:12px;color:var(--muted)}
+.mk-logo{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;background:rgba(255,255,255,.06);border:1px solid var(--line2);font-size:20px;flex:none;overflow:hidden}
+.mk-logo img{width:28px;height:28px;object-fit:contain}
+.mk-ok{margin-left:auto;font:700 10.5px "Exo 2";letter-spacing:.12em;color:var(--ok);font-style:normal}
+.mk-mt{font-size:13px;color:#bcd3e4;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.mk-box{width:min(620px,calc(100vw - 32px));overflow:auto}
+.mk-hd{white-space:pre-wrap;font-size:13px;line-height:1.55;color:#cfe3f0;background:rgba(4,14,26,.6);border:1px solid var(--line2);border-radius:10px;padding:12px;max-height:34vh;overflow:auto}
+.mk-link{color:var(--cyan);font-size:13px;text-decoration:none}
+#mk-f{display:flex;flex-direction:column;gap:10px}#mk-f label{display:flex;flex-direction:column;gap:6px;font-size:13px;color:#cfe3f0}#mk-f em{color:var(--muted)}
+#mk-f input,#mk-f textarea{border-radius:8px;border:1px solid var(--line);background:rgba(4,14,26,.8);color:#e6f4ff;padding:10px 12px;font:13px "JetBrains Mono",monospace}
+#mk-f .row{display:flex;gap:8px;justify-content:flex-end}
+
+.kn-tab{display:none}.kn-tab.on{display:block}
+#kn-tabs{margin-bottom:14px}#kn-tabs b{font:700 11px "Exo 2";color:#04121e;background:var(--cyan);border-radius:999px;padding:1px 7px;margin-left:4px}
+#kn-tabs button.on b{background:#04121e;color:var(--cyan)}
+
+.mk-loc{display:flex;flex-direction:column;gap:10px;margin:6px 0 4px}
+#mk-tim{max-width:420px;height:40px;border-radius:9px;border:1px solid var(--line);background:rgba(4,14,26,.75);color:#e6f4ff;padding:0 14px;font:inherit}
+.mk-nhom{display:flex;gap:6px;flex-wrap:wrap}.mk-nhom button{border:1px solid var(--line2);background:rgba(8,22,38,.6);color:var(--muted);font:600 12.5px "Exo 2";padding:5px 12px;border-radius:999px;cursor:pointer}
+.mk-nhom button.on{color:#04121e;background:var(--cyan);border-color:transparent}
+.nao-seg,.nao-seg button,.nao-seg-nhan{white-space:nowrap}.page-head h1{min-width:0}
+
+.nao-noi{display:flex;flex-direction:column;gap:6px;border-top:1px solid rgba(63,232,255,.15);padding-top:8px;font-size:12.5px}
+.nao-noi div{display:grid;grid-template-columns:110px 1fr;column-gap:8px}.nao-noi span{color:var(--muted)}.nao-noi b{font-weight:600;color:#e6f4ff;word-break:break-all}
+.nao-noi a{color:var(--cyan);text-decoration:none}.nao-noi em{grid-column:2;color:var(--muted);font-style:normal;font-size:11.5px}

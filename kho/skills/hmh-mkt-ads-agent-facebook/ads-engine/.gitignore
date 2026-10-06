@@ -1,0 +1,20 @@
+# === BÍ MẬT — TUYỆT ĐỐI KHÔNG commit ===
+config.env
+.secrets/*.env
+.secrets/*.json
+!.secrets/*.example
+!config.env.example
+
+# === Rác chạy / dữ liệu tạm ===
+node_modules/
+__pycache__/
+*.pyc
+*.log
+_c_mediafile
+_t_*.json
+_test_*.json
+_camp*.json
+_adsets*.json
+_content*.json
+pending-decisions.json
+posted-ledger.json

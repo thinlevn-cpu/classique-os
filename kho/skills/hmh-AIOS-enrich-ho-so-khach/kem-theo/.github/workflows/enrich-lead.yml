@@ -1,0 +1,44 @@
+name: Lọc nhanh lead salepage (dự phòng khi máy tắt)
+
+# Ba cách kích hoạt:
+#  1. repository_dispatch — Lark Base bắn thẳng vào khi có lead mới (event_type: lead-new)
+#  2. schedule — tự chạy mỗi 6 tiếng làm lưới an toàn (phòng khi máy bạn tắt cả ngày)
+#  3. workflow_dispatch — bấm tay trên GitHub
+#
+# LƯU Ý THIẾT KẾ: job này CỐ TÌNH không bật cờ "Đã enrich" và không đè lên hồ sơ đã có.
+# Nó chỉ lọc rác bằng luật cứng để sale khỏi gọi số ma. Hồ sơ đầy đủ (Zalo + research)
+# vẫn do máy bạn dựng khi bật lên — vì Zalo và Claude không chạy được trên runner.
+
+on:
+  repository_dispatch:
+    types: [lead-new]
+  schedule:
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: enrich-lead
+  cancel-in-progress: false
+
+jobs:
+  loc-lead:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Lọc lead & ghi nhận xét tạm vào Lark Base
+        env:
+          LARK_APP_ID: ${{ secrets.LARK_APP_ID }}
+          LARK_APP_SECRET: ${{ secrets.LARK_APP_SECRET }}
+          LARK_WEBHOOK: ${{ secrets.LARK_WEBHOOK }}
+          # Điền Base/bảng CỦA BẠN — lấy từ URL Base:
+          #   https://<tenant>.larksuite.com/base/<BASE_TOKEN>?table=<TABLE_ID>&view=<VIEW_ID>
+          # Đây KHÔNG phải secret nên để thẳng ở đây được; muốn kín thì đổi sang ${{ vars.BASE_TOKEN }}.
+          BASE_TOKEN: ${{ vars.BASE_TOKEN }}
+          TABLE_ID: ${{ vars.TABLE_ID }}
+        run: node cloud/scan-leads-cloud.mjs

@@ -1,0 +1,10 @@
+[
+  {"name":"Tên tệp","type":"text"},
+  {"name":"Loại","type":"select","options":[{"name":"Lạnh - Sở thích/Nhân khẩu"},{"name":"Custom - Pixel (khách ghé web)"},{"name":"Custom - Danh sách KH"},{"name":"Custom - Tương tác (Page/IG/Video)"},{"name":"Lookalike"}]},
+  {"name":"Định nghĩa","type":"text"},
+  {"name":"Tệp nguồn (cho Lookalike)","type":"text"},
+  {"name":"Tỷ lệ Lookalike %","type":"number"},
+  {"name":"audience_id","type":"text"},
+  {"name":"Trạng thái","type":"select","options":[{"name":"Chờ tạo"},{"name":"Đã tạo"},{"name":"Lỗi"}]},
+  {"name":"Ghi chú","type":"text"}
+]

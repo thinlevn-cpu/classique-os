@@ -1,0 +1,99 @@
+#!/usr/bin/env python3
+"""Chuẩn hoá ảnh bài viết về CÙNG khung 4:3 (1600x1200), ĐÓNG MỘC The Classique, xuất WebP nhẹ,
+và (tuỳ chọn) làm thêm 1 ẢNH CHIA SẺ 1200x630 cho Facebook/Zalo (Open Graph).
+
+Dùng: python3 anh-4x3.py <spec.json> <out_dir> [--khong-moc] [--dam 0.40] [--jpg] [--tran-kb 200] [--chi-chia-se]
+  --chi-chia-se: chỉ làm ảnh chia sẻ 1200x630 (bỏ qua ảnh thân bài) — publisher dùng khi manifest chưa có og_image.
+spec.json = [{"src":"a.jpg","out":"slug-2-oc-vit","cx":0.5,"cy":0.5}, ...]  (cx,cy = tâm cắt, 0..1)
+  - "out": tên file; đuôi tự đổi thành .webp (hoặc .jpg nếu --jpg).
+  - "nguon": "Van Cleef & Arpels" -> ảnh của BÊN NGOÀI (hãng, báo): KHÔNG đóng mộc (chốt 17/09/2026).
+    Nguồn phải ghi ở figcaption trong bài.
+  - Ảnh chia sẻ: thêm "og": true vào ĐÚNG 1 mục (thường là ảnh đại diện). Có thể chỉnh tâm cắt riêng
+    bằng "og_cx"/"og_cy" (mặc định lấy cx/cy). Xuất "<slug>-chia-se.jpg" 1200x630, JPG vì Zalo/Messenger
+    đọc JPG chắc hơn WebP. Muốn đặt tên khác: "og_out".
+
+Thứ tự bắt buộc: CẮT trước, ĐÓNG MỘC sau. Đóng mộc lên ảnh gốc rồi mới cắt thì mộc lệch tâm hoặc mất chữ
+khi tâm cắt không nằm giữa. Mộc (chủ nhân chốt lại 17/09/2026, thay kiểu 16/09 logo to giữa ảnh):
+logo favicon NỀN TRONG SUỐT, nhỏ GÓC PHẢI DƯỚI, kèm chữ THE CLASSIQUE, đậm 40%.
+CHỈ đóng mộc ảnh của mình; ảnh nguồn ngoài (có "nguon") tuyệt đối không đóng.
+
+Dung lượng (chốt 16/09/2026): ảnh thân bài WebP, trần mặc định 200KB/ảnh; ảnh chia sẻ JPG trần 300KB.
+Script hạ chất lượng dần (85 -> 60) tới khi lọt trần; không lọt thì giữ mức 60 và báo.
+Nhận cả HEIC (sips trên Mac, pillow-heif trên Linux). Cần Pillow có WebP."""
+import sys, json, os, io, subprocess, tempfile
+from PIL import Image, ImageOps
+
+GOC = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..", ".."))
+import importlib.util
+_spec = importlib.util.spec_from_file_location(
+    "dong_moc", os.path.join(GOC, "van-hanh", "tool-dong-moc", "dong-moc.py"))
+_moc = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(_moc)
+
+W, H = 1600, 1200          # khung thân bài 4:3
+OW, OH = 1200, 630         # khung ảnh chia sẻ Open Graph (~1.91:1)
+a = sys.argv
+spec = json.load(open(a[1])); out_dir = a[2]; os.makedirs(out_dir, exist_ok=True)
+co_moc = "--khong-moc" not in a
+dam = float(a[a.index("--dam") + 1]) if "--dam" in a else 0.40
+dang = "jpg" if "--jpg" in a else "webp"
+tran = int(a[a.index("--tran-kb") + 1]) if "--tran-kb" in a else 200
+chi_chia_se = "--chi-chia-se" in a
+
+
+def mo(p):
+    if p.lower().endswith((".heic", ".heif")):
+        return ImageOps.exif_transpose(_moc.mo_heic(p)).convert("RGB")
+    return ImageOps.exif_transpose(Image.open(p)).convert("RGB")
+
+
+def cat(im, ti_le, cx, cy, kich_thuoc):
+    w, h = im.size
+    cw = min(w, int(h * ti_le)); ch = int(cw / ti_le)
+    x0 = max(0, min(w - cw, int(cx * w) - cw // 2)); y0 = max(0, min(h - ch, int(cy * h) - ch // 2))
+    return im.crop((x0, y0, x0 + cw, y0 + ch)).resize(kich_thuoc, Image.LANCZOS)
+
+
+def luu(img, duong_dan, dinh_dang, tran_kb):
+    """Hạ chất lượng dần tới khi file <= tran_kb. Trả (kb, quality)."""
+    for q in (85, 80, 75, 70, 65, 60):
+        buf = io.BytesIO()
+        if dinh_dang == "webp":
+            img.save(buf, "WEBP", quality=q, method=6)
+        else:
+            img.save(buf, "JPEG", quality=q, optimize=True, progressive=True)
+        if buf.tell() <= tran_kb * 1024 or q == 60:
+            open(duong_dan, "wb").write(buf.getvalue())
+            return buf.tell() // 1024, q
+
+
+def ten(goc, duoi):
+    return os.path.splitext(goc)[0] + "." + duoi
+
+
+so_og = 0
+for it in spec:
+    im = mo(it["src"])
+    cx, cy = it.get("cx", 0.5), it.get("cy", 0.5)
+    if not chi_chia_se:
+        c = cat(im, 4 / 3, cx, cy, (W, H))
+        if co_moc and not it.get("nguon"):
+            c = _moc.dong_moc(c, dam=dam, vi_tri="goc", them_ten=True)
+        out = ten(it["out"], dang)
+        kb, q = luu(c, os.path.join(out_dir, out), dang, tran)
+        canh_bao = "  ⚠️ vượt trần" if kb > tran else ""
+        print(f"{out} {im.size} -> {(W, H)} {'(nguồn ngoài, không mộc) ' if it.get('nguon') else ('+ mộc ' if co_moc else '')}{kb}KB q{q}{canh_bao}")
+
+    if it.get("og"):
+        so_og += 1
+        o = cat(im, OW / OH, it.get("og_cx", cx), it.get("og_cy", cy), (OW, OH))
+        if co_moc and not it.get("nguon"):
+            o = _moc.dong_moc(o, dam=dam, vi_tri="goc", them_ten=True)
+        slug = os.path.splitext(it["out"])[0]
+        og_out = ten(it.get("og_out") or slug + "-chia-se", "jpg")
+        kb, q = luu(o, os.path.join(out_dir, og_out), "jpg", 300)
+        print(f"{og_out} (ảnh chia sẻ) -> {(OW, OH)} {kb}KB q{q}{'  ⚠️ vượt trần' if kb > 300 else ''}")
+
+if so_og == 0:
+    print("ℹ️ Chưa có ảnh chia sẻ 1200x630: thêm \"og\": true vào mục ảnh đại diện trong spec.json.")
+elif so_og > 1:
+    print("⚠️ Có nhiều hơn 1 mục \"og\": true, publisher chỉ dùng 1 ảnh chia sẻ.")

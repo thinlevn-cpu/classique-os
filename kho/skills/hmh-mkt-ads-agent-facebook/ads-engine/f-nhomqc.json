@@ -1,0 +1,12 @@
+[
+  {"name":"Tên nhóm QC","type":"text"},
+  {"name":"Chiến dịch","type":"text"},
+  {"name":"Tệp đối tượng","type":"text"},
+  {"name":"Loại trừ tệp","type":"text"},
+  {"name":"Ngân sách ngày","type":"number"},
+  {"name":"Tối ưu","type":"select","options":[{"name":"CONVERSATIONS (hội thoại)"},{"name":"OFFSITE_CONVERSIONS (chuyển đổi web)"},{"name":"LEAD"}]},
+  {"name":"Vị trí","type":"select","options":[{"name":"Advantage+ (tự động)"},{"name":"Messenger"},{"name":"Feed Facebook/IG"}]},
+  {"name":"Trạng thái","type":"select","options":[{"name":"Chờ dựng"},{"name":"Đã tạo nháp"},{"name":"Đang chạy"},{"name":"Tạm dừng"},{"name":"Kết thúc"}]},
+  {"name":"adset_id","type":"text"},
+  {"name":"Ghi chú","type":"text"}
+]

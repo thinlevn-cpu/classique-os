@@ -1,0 +1,11 @@
+# Mẫu Caddy: thay os.ten-mien-cua-ban.vn bằng tên miền của bạn (bản ghi A trỏ về máy chủ).
+# Caddy tự xin HTTPS. OS chỉ nghe 127.0.0.1:8790 nên chỉ ra ngoài được qua Caddy.
+os.ten-mien-cua-ban.vn {
+    encode zstd gzip
+    reverse_proxy 127.0.0.1:8790 {
+        flush_interval -1
+        transport http {
+            read_timeout 600s
+        }
+    }
+}

@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Classique OS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Exo+2:wght@500;600;700&family=Be+Vietnam+Pro:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/style.css?v=1791184542">
+</head>
+<body>
+<canvas id="nen"></canvas>
+<header class="topbar"><div class="wordmark">CLASSIQUE OS</div><i class="vach"></i><span id="chao">Chào anh</span>
+  <form class="search" id="hoi-nhanh"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="hoi-nhanh-in" placeholder="Ra lệnh cho AI..."></form>
+  <span class="chip-st"><i class="den ok"></i><span id="st-engine">Claude</span> · online</span><span class="chip-st"><i class="den ok"></i>Lark · đồng bộ</span><button class="chip-st chip-nao" id="chip-nao" title="Đổi bộ não"><svg viewBox="0 0 24 24"><path d="M9 4a3 3 0 0 0-3 3 3 3 0 0 0-2 5 3 3 0 0 0 2 5 3 3 0 0 0 6 1V5a2 2 0 0 0-3-1zM15 4a3 3 0 0 1 3 3 3 3 0 0 1 2 5 3 3 0 0 1-2 5 3 3 0 0 1-6 1"/></svg><span id="st-nao">Bộ não</span><b>▾</b></button>
+  <button class="ai-btn" id="ai-tg" title="Mở/đóng trợ lý">AI</button></header>
+<div class="app">
+  <!-- THANH TRÁI -->
+  <nav class="rail" id="rail">
+    <button data-p="dieuhanh" class="on"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></svg><span>Điều hành</span></button>
+    <button data-p="troly"><svg viewBox="0 0 24 24"><path d="M5 19l4-11 4 11M6.5 15h5M17 4l.8 2.2L20 7l-2.2.8L17 10l-.8-2.2L14 7l2.2-.8z"/></svg><span>Trợ lý</span></button>
+    <button data-p="store"><svg viewBox="0 0 24 24"><path d="M4 9l1.5-5h13L20 9M4 9h16v11H4zM9 20v-5h6v5"/></svg><span>Store</span></button>
+    <button data-p="ketnoi"><svg viewBox="0 0 24 24"><path d="M10 14a4 4 0 005.7 0l3-3a4 4 0 00-5.7-5.7l-1 1M14 10a4 4 0 00-5.7 0l-3 3a4 4 0 005.7 5.7l1-1"/></svg><span>Kết nối</span></button>
+    <button data-p="nao"><svg viewBox="0 0 24 24"><path d="M9 4a3 3 0 00-3 3 3 3 0 00-2 5 3 3 0 002 5 3 3 0 006 0V7a3 3 0 00-3-3zM15 4a3 3 0 013 3 3 3 0 012 5 3 3 0 01-2 5 3 3 0 01-6 0"/></svg><span>Bộ não</span></button>
+    <button data-p="models"><svg viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9zM12 12l8-4.5M12 12v9M12 12L4 7.5"/></svg><span>Models</span></button>
+    <button data-href="/boc-am" title="Bóc âm: ghi lời họp, học, Zoom"><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3M8 21h8"/></svg><span>Bóc âm</span></button>
+    <button data-p="caidat"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg><span>Cài đặt</span></button>
+    <div class="rail-foot"><span id="toi">…</span><button class="link" id="dang-xuat">Đăng xuất</button></div>
+  </nav>
+
+  <!-- GIỮA -->
+  <div class="center">
+
+
+    <section class="page on" id="p-dieuhanh">
+      <div class="page-head"><h1>Điều hành doanh nghiệp</h1><div class="head-act"><div class="nao-seg" id="dh-nao" title="Bộ não trợ lý đang dùng"></div><span class="meta" id="dh-luc"></span><button class="btn ghost" id="dh-lm">Làm mới từ Lark</button></div></div>
+      <div class="tabs" id="dh-tabs">
+        <button data-t="tong" class="on">Tổng quan</button><button data-t="ban">Bán hàng</button><button data-t="vanhanh">Vận hành</button>
+        <button data-t="khach">Khách &amp; Lead</button><button data-t="mkt">Marketing</button><button data-t="tc">Tài chính</button>
+      </div>
+      <div id="dh"><div class="skeleton">Đang đọc số liệu từ Lark...</div></div>
+    </section>
+
+    <section class="page" id="p-troly">
+      <div class="stage">
+        <canvas id="graph"></canvas>
+        <div class="legend" id="legend"></div>
+        <div class="orb-wrap"><canvas class="loi" id="loi-lon"></canvas><div class="orb-st" id="orb-st">SẴN SÀNG</div><div class="orb-sub" id="orb-sub">Giữ phím Cách để nói</div></div>
+        <div class="hover-tip" id="tip"></div>
+      </div>
+    </section>
+
+    <section class="page" id="p-store">
+      <div class="page-head"><h1>Classique Store</h1><span class="meta" id="st-dem"></span></div>
+      <p class="lead">Kỹ năng hmh-* có sẵn trong kho. Bấm <b>Cài</b> là Trợ lý dùng được ngay trong hội thoại. Kỹ năng nhãn <b>cần script</b>: Trợ lý làm phần nghiên cứu và viết, bước chạy script anh làm tay.</p>
+      <div class="bar"><input type="search" id="st-tim" placeholder="Tìm kỹ năng..."><span class="seg" id="st-loc"><button data-n="" class="on">Tất cả</button><button data-n="Marketing">Marketing</button><button data-n="Bán hàng">Bán hàng</button><button data-n="Vận hành">Vận hành</button><button data-n="__cai">Đã cài</button></span></div>
+      <div class="grid g3" id="store"></div>
+    </section>
+
+    <section class="page" id="p-ketnoi">
+      <div class="page-head"><h1>Kết nối</h1></div>
+      <div class="tabs" id="kn-tabs"><button data-kt2="dang" class="on">Đang dùng <b id="kn-so1"></b></button><button data-kt2="kho">Thư viện MCP <b id="kn-so2"></b></button><button data-kt2="tu">Tự thêm MCP</button></div>
+      <div class="kn-tab on" data-tab="dang">
+        <p class="lead">Kết nối AI đang dùng được. Mỗi kết nối chọn mức quyền: <b>Chỉ đọc</b>, <b>Đề xuất</b> (ghi phải chờ anh Duyệt), <b>Toàn quyền</b>. Khoá nằm trên máy chủ, không gửi ra trình duyệt.</p>
+        <div class="grid g2" id="kn"></div>
+        <h2 style="margin-top:22px">MCP đã nối</h2>
+        <div id="mcp-ds"></div>
+      </div>
+      <div class="kn-tab" data-tab="kho">
+        <p class="lead">Danh mục kết nối có sẵn (chép từ Javis). Cần cái nào thì bấm <b>Kết nối</b>, làm theo hướng dẫn, dán khoá: OS thử bắt tay với máy chủ thật, chạy được mới lưu.</p>
+        <div class="mk-loc" id="mk-loc"></div>
+        <div class="mk-luoi" id="mk"></div>
+      </div>
+      <div class="kn-tab" data-tab="tu">
+        <p class="lead">Máy chủ MCP bất kỳ (stdio hoặc http). Chỉ có bật/tắt: bật là AI dùng được mọi công cụ của nó. Chỉ thêm nguồn anh tin.</p>
+        <form class="mcp-form" id="mcp-form"><input name="ten" placeholder="tên (vd: notion)" required><input name="lenh" placeholder="lệnh stdio (vd: npx)"><input name="tham_so" placeholder="tham số, cách nhau dấu cách"><input name="url" placeholder="hoặc URL http"><button class="btn gold">Thêm</button></form>
+      </div>
+    </section>
+
+    <section class="page" id="p-models">
+      <div class="page-head"><h1>Models</h1></div>
+      <div id="models"></div>
+      <p class="note">Chạy nền 24/7 bằng gói Claude Pro/Max hoặc ChatGPT Plus có rủi ro bị khoá tài khoản: các hãng chỉ tính gói cho dùng cá nhân thông thường. Khi chạy nền thật, nên dùng API key.</p>
+    </section>
+
+    <section class="page" id="p-nao">
+      <div class="page-head"><h1>Bộ não</h1></div>
+      <div id="nao-trang"></div>
+    </section>
+
+    <section class="page" id="p-caidat">
+      <div class="cd-wrap">
+        <div class="card cd-main">
+          <h1>Cài đặt</h1>
+          <div class="pills" id="cd-tabs"><button data-c="giong" class="on">Giọng nói</button><button data-c="nho">Trí nhớ</button><button data-c="taikhoan">Tài khoản</button><button data-c="hoat">Hoạt động</button></div>
+          <div id="cd-noi"></div>
+        </div>
+        <div class="card cd-nho"><h2>Trí nhớ của AI</h2><div class="meta" style="margin-bottom:10px">Điều trợ lý nhớ lâu dài về anh và công ty, dùng ở mọi hội thoại.</div>
+          <div id="nho-ds" class="nho-ds"></div>
+          <form id="nho-them" class="nho-them"><input name="nd" placeholder="Điều cần nhớ, vd: Anh thích báo cáo ngắn gọn" required><button class="btn gold">+ Thêm điều cần nhớ</button></form>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- KHUNG TRỢ LÝ -->
+  <aside class="ai" id="ai">
+    <div class="ai-orb"><button class="icon" id="new-chat" title="Hội thoại mới">＋</button>
+      <canvas class="loi" id="loi-chat"></canvas>
+      <div class="ai-name"><b>Trợ lý AI</b><button class="chip-model" id="chip-model" title="Đổi bộ não và model"><i class="den ok"></i><span id="badge">…</span><b>▾</b></button><span class="ai-st" id="ai-st">SẴN SÀNG</span></div></div>
+    <div class="mode" id="mode"><button data-m="chu">Chỉ chữ</button><button data-m="chu_giong">Chữ + giọng</button><button data-m="ranh_tay">Trò chuyện</button><button data-m="live">ChatGPT Live</button></div>
+    <div class="log" id="log">
+      <div class="m bot"><p>Chào anh, em là trợ lý vận hành, làm việc thẳng trên Lark, Pancake, Meta và website. Anh thử:</p>
+        <ul><li data-q="Tóm tắt tình hình kinh doanh 7 ngày qua">Tóm tắt tình hình kinh doanh 7 ngày qua</li>
+            <li data-q="Chiến dịch Meta nào đang chi nhiều nhất tuần này?">Chiến dịch Meta nào đang chi nhiều nhất tuần này?</li>
+            <li data-q="Có bao nhiêu lead chưa được chăm sóc? Gợi ý cách xử lý">Có bao nhiêu lead chưa được chăm sóc?</li></ul></div>
+    </div>
+    <canvas id="song" class="song"></canvas>
+    <form class="composer" id="composer">
+      <textarea id="inp" rows="1" placeholder="Nói hoặc gõ cho trợ lý..."></textarea>
+      <button type="button" class="mic" id="mic" title="Bấm để nói"><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/></svg></button>
+    </form>
+  </aside>
+</div>
+
+<nav class="tabbar" id="tabbar">
+  <button data-p="dieuhanh" class="on"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></svg><span>Điều hành</span></button>
+  <button data-p="troly"><svg viewBox="0 0 24 24"><path d="M9 4a3 3 0 00-3 3 3 3 0 00-2 5 3 3 0 002 5 3 3 0 006 0V7a3 3 0 00-3-3zM15 4a3 3 0 013 3 3 3 0 012 5 3 3 0 01-2 5 3 3 0 01-6 0"/></svg><span>Trợ lý</span></button>
+  <button data-p="store"><svg viewBox="0 0 24 24"><path d="M4 9l1.5-5h13L20 9M4 9h16v11H4zM9 20v-5h6v5"/></svg><span>Store</span></button>
+  <button data-p="ketnoi"><svg viewBox="0 0 24 24"><path d="M10 14a4 4 0 005.7 0l3-3a4 4 0 00-5.7-5.7l-1 1M14 10a4 4 0 00-5.7 0l-3 3a4 4 0 005.7 5.7l1-1"/></svg><span>Kết nối</span></button>
+  <button data-p="nao"><svg viewBox="0 0 24 24"><path d="M12 5a3 3 0 0 0-5.6 1.5A3 3 0 0 0 4 11a3 3 0 0 0 1.5 5A3 3 0 0 0 12 18zM12 5a3 3 0 0 1 5.6 1.5A3 3 0 0 1 20 11a3 3 0 0 1-1.5 5A3 3 0 0 1 12 18"/></svg><span>Bộ não</span></button>
+  <button data-p="caidat"><svg viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg><span>Cài đặt</span></button>
+</nav>
+<div class="pop" id="pop-model" hidden></div>
+<div class="mpick" id="mk-hop" hidden><div class="mpick-box mk-box"></div></div>
+<div class="mpick" id="mpick" hidden><div class="mpick-box"><input id="mpick-tim" placeholder="Tìm model..." autocomplete="off"><div id="mpick-ds"></div></div></div>
+<aside class="drawer" id="drawer" aria-hidden="true">
+  <div class="drawer-head"><b id="d-title">Chi tiết</b><button class="icon" id="d-close" aria-label="Đóng">✕</button></div>
+  <div class="drawer-body" id="d-body"></div>
+  <div class="drawer-foot" id="d-foot"></div>
+</aside>
+<div class="toast" id="toast"></div>
+<script src="/static/loi-ai.js?v=1791184542"></script>
+<script src="/static/app.js?v=1791184542"></script>
+<script src="/static/tro-ly.js?v=1791184542"></script>
+</body>
+</html>

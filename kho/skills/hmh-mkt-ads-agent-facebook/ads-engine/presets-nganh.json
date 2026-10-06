@@ -1,0 +1,75 @@
+{
+  "_mo_ta": "Preset mặc định theo ngành — điền sẵn khi người dùng chọn Ngành trong Form. Số là điểm KHỞI ĐẦU, MVP đo lại rồi ghi đè. Tỷ lệ chốt = chat/lead -> đơn (hoặc booking/lịch hẹn/ghé).",
+  "nganh": [
+    {
+      "ma": "dao-tao",
+      "ten": "Đào tạo / Khóa học",
+      "ty_le_chat_to_don": 0.05,
+      "ty_le_lead_to_don": 0.15,
+      "loi_nhuan_muon_giu": 0.5,
+      "benchmark_ctr_toi_thieu": 0.015,
+      "ghi_chu": "Giá cao, cần tư vấn & chạm cảm xúc. Phễu: chat -> tư vấn/học thử -> chốt.",
+      "hook_goi_y": [
+        "Nỗi đau: Biết mình cần [kỹ năng] mà không biết bắt đầu từ đâu?",
+        "Khát khao: Lộ trình [N] ngày để [kết quả cụ thể], không mơ hồ.",
+        "Phản bác: Không cần giỏi công nghệ, không cần bỏ việc — vẫn làm được."
+      ]
+    },
+    {
+      "ma": "spa-tham-my",
+      "ten": "Spa / Thẩm mỹ / Làm đẹp",
+      "ty_le_chat_to_don": 0.12,
+      "ty_le_lead_to_don": 0.25,
+      "loi_nhuan_muon_giu": 0.5,
+      "benchmark_ctr_toi_thieu": 0.018,
+      "ghi_chu": "Giá trung bình, quyết định nhanh hơn đào tạo. Phễu: chat -> đặt lịch -> đến làm dịch vụ. Chú trọng LTV (liệu trình lặp lại).",
+      "hook_goi_y": [
+        "Nỗi đau: [Vấn đề da/dáng] khiến bạn ngại soi gương?",
+        "Khát khao: Trải nghiệm [dịch vụ] — ưu đãi buổi đầu chỉ [giá].",
+        "Bằng chứng: Trước/sau của [N] khách trong [thời gian]."
+      ]
+    },
+    {
+      "ma": "bat-dong-san",
+      "ten": "Bất động sản",
+      "ty_le_chat_to_don": 0.01,
+      "ty_le_lead_to_don": 0.03,
+      "loi_nhuan_muon_giu": 0.6,
+      "benchmark_ctr_toi_thieu": 0.012,
+      "ghi_chu": "Giá rất cao, chu kỳ dài, tỷ lệ chốt thấp nhưng 1 đơn lãi lớn. CPMC/CPL mục tiêu sẽ CAO (chấp nhận trả nhiều/hội thoại). Đo enroll = giao dịch thành công.",
+      "hook_goi_y": [
+        "Khan hiếm: Chỉ còn [N] căn [dự án] giá gốc CĐT.",
+        "Lợi ích: Sở hữu [vị trí] chỉ từ [số tiền]/tháng.",
+        "FOMO: Bảng giá đợt [N] sắp tăng [X]%."
+      ]
+    },
+    {
+      "ma": "nha-khoa",
+      "ten": "Nha khoa / Phòng khám",
+      "ty_le_chat_to_don": 0.15,
+      "ty_le_lead_to_don": 0.30,
+      "loi_nhuan_muon_giu": 0.5,
+      "benchmark_ctr_toi_thieu": 0.018,
+      "ghi_chu": "Dịch vụ giá trung-cao, quyết định theo nhu cầu sức khỏe. Phễu: chat -> đặt lịch khám -> điều trị. Niềm tin & chuyên môn là then chốt.",
+      "hook_goi_y": [
+        "Nỗi đau: [Vấn đề răng] ảnh hưởng nụ cười & ăn uống?",
+        "Ưu đãi: Khám + tư vấn miễn phí + chụp phim.",
+        "Uy tín: Bác sĩ [N] năm kinh nghiệm, công nghệ [tên]."
+      ]
+    },
+    {
+      "ma": "fnb",
+      "ten": "Nhà hàng / Quán ăn / Cafe (F&B)",
+      "ty_le_chat_to_don": 0.20,
+      "ty_le_lead_to_don": 0.35,
+      "loi_nhuan_muon_giu": 0.4,
+      "benchmark_ctr_toi_thieu": 0.02,
+      "ghi_chu": "Giá thấp, quyết định nhanh, mua lặp. CPMC mục tiêu THẤP. Đo enroll = lượt đặt bàn/đơn. Trọng LTV + tần suất ghé.",
+      "hook_goi_y": [
+        "Thèm: [Món signature] mới ra lò tại [quán].",
+        "Ưu đãi: Combo [món] chỉ [giá] — đặt bàn qua tin nhắn.",
+        "Không khí: Góc check-in [đặc điểm] cho nhóm bạn/gia đình."
+      ]
+    }
+  ]
+}

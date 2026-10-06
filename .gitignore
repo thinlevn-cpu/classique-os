@@ -1,0 +1,23 @@
+.venv/
+.env
+# Bản đệm dữ liệu Lark (có tên, SĐT khách) - không lên git
+cache.db
+cache.db-*
+__pycache__/
+tai-khoan.json
+.dang-nhap
+thiet-ke/*.png
+hoi-thoai.db
+phien.json
+tri-nho.json
+brains/
+nao.json
+tri-nho.json.da-chuyen
+khoa-model.json
+khoa-mcp.json
+mcp-tep/
+ho-so.json
+du-lieu/
+GHI-CHU-RIENG.md
+cache.db*
+cau-hinh.json

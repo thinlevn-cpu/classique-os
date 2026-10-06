@@ -1,0 +1,137 @@
+---
+name: hmh-mkt-research-seo-web
+description: >
+  Nghiên cứu từ khoá + nghiên cứu chủ đề (YouTube/TikTok/FB) theo nguyên tắc "follow top 100 / mô thức thành công",
+  đưa nguồn vào NotebookLM phân tích theo ĐẦU BÀI SEO, rồi GHI brief đầy đủ vào bảng Lark Base "Lịch bài SEO"
+  thành record "Chờ viết" để skill đăng bài lấy. Đây là GIAI ĐOẠN 1 (nghiên cứu & nạp) — ghép cặp với
+  hmh-AIOS-dang-bai-seo (giai đoạn 2 đăng bài). Grounded từ Backlinko (search intent, từ khoá traffic tốt + KD thấp)
+  và Ahrefs (3 C's của intent, Keyword Difficulty, phân tích SERP top). Dùng khi người dùng muốn nghiên cứu từ khoá,
+  tìm chủ đề viết blog, săn chủ đề video thắng để dựng bài SEO, lên kế hoạch content web theo lịch, hoặc nạp brief
+  vào bảng để đăng bài tự động. Kích hoạt khi có từ: nghiên cứu từ khoá, research từ khoá seo, tìm chủ đề viết bài,
+  topic research, lên kế hoạch bài viết, brief seo, nạp bài vào bảng web, follow top 100, mô thức thành công,
+  research chủ đề blog, keyword research, đầu bài seo.
+---
+
+> **BẢN BÀN GIAO HỌC VIÊN** — mọi token/mật khẩu/tên miền cá nhân đã được gỡ.
+> Trước khi dùng: đọc `HUONG-DAN-CAI-DAT.md` ở thư mục gốc bộ bàn giao và điền cấu hình CỦA BẠN
+> vào `.secrets/wordpress.env` + `.secrets/seo-web.env`.
+
+# Skill: Nghiên cứu từ khoá & chủ đề → nạp brief SEO vào Lark Base (Giai đoạn 1)
+
+Biến một **chủ đề bạn chỉ định** thành brief bài viết chuẩn SEO, ghi thẳng vào bảng "Lịch bài SEO" của bạn ở
+trạng thái **"Chờ viết"**. Skill đăng bài [[hmh-AIOS-dang-bai-seo]] (Giai đoạn 2) sẽ nhặt và đăng tuần tự mỗi ngày.
+
+> Luồng: **Bạn chỉ định chủ đề → research từ khoá + video thắng (follow top 100) → NotebookLM phân tích theo đầu bài SEO → ghi 21 trường brief vào Lark Base ("Chờ viết").**
+
+## Nguồn / triết lý gốc (Luật 2a của [[hmh-AIOS-tao-skill]])
+
+Grounded từ guru gốc — research lưu ở [[2026-06-15-research-seo-web-grounding]]:
+- **Brian Dean / Backlinko**: keyword research là nền móng; chọn từ **traffic tốt + cạnh tranh thấp**; **search intent là vua** (trang phải là CHÍNH XÁC thứ người tìm muốn); long-tail chuyển đổi cao.
+- **Ahrefs**: **3 C's of Search Intent** (Content Type / Format / Angle), **Keyword Difficulty 0–100**, và "**follow the crowd**" — đọc top SERP rồi làm theo mô thức đang thắng (sâu hơn = skyscraper).
+- **Tri thức viết bài nội bộ**: `references/blog-writing-checklist.md` (headline, sapo, heading, ảnh, kết luận, CTA) — brief phải hướng tới checklist này.
+
+## Khi nào dùng / KHÔNG dùng
+
+- **DÙNG:** nghiên cứu từ khoá cho 1 chủ đề; săn chủ đề/video thắng để dựng bài; nạp 1 hay nhiều brief vào bảng web.
+- **KHÔNG dùng:** viết & đăng bài lên WordPress (→ [[hmh-AIOS-dang-bai-seo]]); chỉ research video YouTube thuần báo cáo (→ [[hmh-mkt-research-youtube]]); post Facebook tri thức (→ [[hmh-mkt-content-tri-thuc]]); landing/sales page (→ [[hmh-mkt-ladipage]]).
+
+## Tiền điều kiện
+
+| Hạng mục | Giá trị |
+|----------|---------|
+| Lark Base | base_token `<SEO_BASE_TOKEN>` · table `<SEO_TABLE_ID>` ("Lịch bài SEO") |
+| lark-cli | đã cài & đăng nhập (xem [[lark-cli-setup]]) — script gọi `lark-cli` |
+| Node | `C:\Program Files\nodejs` (không trên PATH mặc định — thêm khi chạy) |
+| YouTube API | dùng lại [[hmh-mkt-research-youtube]] (`YOUTUBE_API_KEY` trong `.env`) — KHÔNG có share count |
+| Apify (tuỳ chọn) | [[apify-scrape-mxh]] cho share thật TikTok/FB (tầng 2) |
+| NotebookLM | [[notebooklm-research]] (đăng nhập định kỳ) |
+
+---
+
+## QUY TRÌNH THỰC THI
+
+> Lệnh cần Node + lark-cli: `export PATH="$PATH:/c/Program Files/nodejs:$APPDATA/npm"   # chỉnh theo máy của bạn nếu node/lark-cli chưa có trên PATH`
+
+### Bước 0 — Thư mục output
+Tạo `output/YYYY-MM-DD-research-seo-<chủ-đề>/` cho đợt nghiên cứu này (theo CLAUDE.md mục `output/`).
+
+### Bước 1 — Làm rõ chủ đề & số bài
+Bạn chỉ định **chủ đề** (vd "phễu marketing tự động") và **số bài** muốn nạp. Mỗi bài = 1 từ khoá chính.
+
+### Bước 2 — Nghiên cứu TỪ KHOÁ (Backlinko)
+Đọc `references/keyword-research-method.md`. Với mỗi chủ đề: bung biến thể (autocomplete, "People also ask",
+related), chọn **từ khoá chính** (volume tốt + KD thấp), gom **từ khoá phụ** (long-tail/parent topic) và
+**từ khoá người dùng** (cụm thật người dùng gõ). Ước lượng **Volume tháng** + **Độ khó KD (0–100)**.
+
+### Bước 2b — Câu hỏi con (AEO, bắt buộc từ 24/09/2026)
+Google AI Mode tách một câu hỏi thành 10-30 câu hỏi con, AI Overviews/ChatGPT trích đoạn khớp từng câu hỏi con
+(research 9 video guru 23/09/2026: `output/2026-09-23-yt-seo-guru-ai/`). Với mỗi từ khoá chính, gom **5-8 câu hỏi con thật**:
+People Also Ask và "Tìm kiếm liên quan" trên SERP Google VN, autocomplete, và câu khách hỏi thật
+(`grep` trong `wiki/sources/VOC 63.585 câu inbox thật.md`, `wiki/analyses/20 câu hỏi khách thật trước trong sau mua.md`).
+Đưa **ít nhất 2-4 câu vào Outline làm H2 dạng câu hỏi có "?"**, phần còn lại làm FAQ cuối bài. Cổng văn chặn bài có dưới 2 H2 câu hỏi.
+
+**Dạng bài ưu tiên:** Ahrefs đo 43,8% trang được AI trích là **list, so sánh, review**. Khi hai góc ngang nhau, chọn góc
+so sánh ("X hay Y"), danh sách tiêu chí ("N dấu hiệu", "N lưu ý") hoặc đánh giá; Outline ghi rõ chỗ đặt **bảng so sánh / bảng thông số / danh sách**.
+Không chọn góc "ultimate guide" gom mọi thứ: HubSpot và Open Forge đều thấy bài hẹp theo đúng câu hỏi được trích nhiều hơn.
+
+### Bước 3 — Follow TOP 100 / mô thức thành công
+**3a. SERP (bắt buộc):** đọc các trang đang top cho từ khoá chính, rút **3 C's** → Content Type (Schema Type),
+Format (Outline), Angle (Tiêu đề/Meta). Ghi nguồn ngoài mạnh vào Backlink Targets.
+
+**3b. Video thắng — tầng 1 (YouTube API, mặc định):** dùng script research-youtube tìm video outlier:
+```bash
+node ".claude/skills/hmh-mkt-research-youtube/scripts/yt-research.mjs" \
+  --query "<chủ đề>" --min-views 100000 --max 100 --region VN --lang vi \
+  --sort outlier --out "output/YYYY-MM-DD-research-seo-<chủ-đề>/yt.json"
+```
+Outlier cao = góc/chủ đề đang cộng hưởng → **học góc tiếp cận và câu hỏi người xem**, KHÔNG ghi link video kênh ngoài vào brief để nhúng (luật vàng video: chỉ nhúng kênh chính chủ, sửa 23/09/2026).
+
+**3c. Share thật — tầng 2 (tuỳ chọn, Apify):** chỉ khi cần xác nhận lan toả >1000 share → scrape TikTok/FB qua
+[[apify-scrape-mxh]] (YouTube API không có share). Bỏ qua nếu tầng 1 đã đủ tín hiệu.
+
+### Bước 4 — NotebookLM tổng hợp theo ĐẦU BÀI SEO
+Đưa transcript video thắng + trang SERP top vào NotebookLM ([[notebooklm-research]]), hỏi theo
+`references/blog-writing-checklist.md` để rút brief: angle headline, outline theo format thắng, meta title/description,
+từ khoá phụ, internal/backlink, độ dài đề xuất, ý CTA. (NotebookLM = tổng hợp nhiều nguồn thành 1 brief; nếu nguồn ít,
+có thể tổng hợp trực tiếp.)
+
+### Bước 5 — Dựng brief JSON
+Tạo `output/YYYY-MM-DD-research-seo-<chủ-đề>/briefs.json` theo schema ở `references/field-mapping.md`
+(1 object hoặc mảng). Mỗi brief phải thoả `blog-writing-checklist.md`. **CẤM em dash "—" và emoji.** Đặt **Ngày đăng** giãn cách (mỗi bài 1 ngày) để skill đăng bài rút tuần tự.
+
+### Bước 6 — Kiểm trước rồi GHI vào bảng ("Chờ viết")
+```bash
+# Xem trước payload (không ghi):
+node ".claude/skills/hmh-mkt-research-seo-web/scripts/write-brief-to-base.mjs" --in "<briefs.json>" --dry-run
+# Ghi thật (tạo record Trạng thái = "Chờ viết"):
+node ".claude/skills/hmh-mkt-research-seo-web/scripts/write-brief-to-base.mjs" --in "<briefs.json>"
+```
+Script tự map tên trường, ép kiểu số, đổi Ngày đăng → epoch ms, set Trạng thái "Chờ viết". In `WRITE_OK <ids>`.
+**File ảnh để người thiết kế bổ sung sau** (hoặc [[hmh-AIOS-anh-lark-wordpress]]).
+
+### Bước 7 — Lưu output + ghi sổ
+- Lưu `yt.json`, `briefs.json`, báo cáo `.md` (frontmatter `type: output`, ghi chủ đề + tham số + record_id đã tạo) trong thư mục đợt.
+- Cập nhật `index.md` (mục Output) + ghi `log.md`:
+  `## [YYYY-MM-DD] query | research seo web: <chủ đề> → nạp N brief "Chờ viết"`
+- Tri thức tái dùng (vd "công thức tiêu đề thắng ngành X") → nâng cấp trang `wiki/`.
+
+---
+
+## Tham chiếu scripts / references
+- `scripts/write-brief-to-base.mjs` — ghi brief JSON → record "Chờ viết" (có `--dry-run`).
+- `references/keyword-research-method.md` — phương pháp keyword + topic research (grounded).
+- `references/blog-writing-checklist.md` — đầu bài viết blog (brief phải bám).
+- `references/field-mapping.md` — 31 trường bảng + field_id + schema brief JSON.
+- Công cụ con: `.claude/skills/hmh-mkt-research-youtube/scripts/yt-research.mjs` (video outlier).
+
+## Lưu ý / gotcha
+- **YouTube API KHÔNG có share count** — "video thắng" dùng outlier/engagement làm proxy. Cần share thật → Apify (TikTok/FB).
+- **Không ghi đè bài cũ**: skill này CHỈ TẠO record mới. Sửa bài đã có → dùng lark-base trực tiếp.
+- **Trạng thái phải đúng "Chờ viết"** (option có sẵn) — sai chữ sẽ tạo option mới. Script đã ghim đúng.
+- **Ngày đăng quá khứ** sẽ bị skill đăng bài coi là "đến hạn" và đăng ngay — đặt ngày tương lai nếu muốn giãn lịch.
+- **lark-cli trên máy này**: Node không trên PATH; spawn `.cmd` cần `shell:true` (đã xử lý trong script). Xem [[lark-cli-setup]].
+- **Ranh giới với [[hmh-AIOS-dang-bai-seo]]**: skill này GHI brief (đầu vào); skill kia ĐỌC brief để viết+đăng (đầu ra). Hai bên bàn giao qua trường Trạng thái.
+
+## Output (theo CLAUDE.md)
+Mỗi đợt = 1 thư mục `output/YYYY-MM-DD-research-seo-<chủ-đề>/` gồm `yt.json`, `briefs.json`, báo cáo `.md`.
+Cập nhật `index.md` + `log.md`.

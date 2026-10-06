@@ -1,0 +1,16 @@
+[
+  {"name":"Ngày","type":"text"},
+  {"name":"Chiến dịch","type":"text"},
+  {"name":"Ad set","type":"text"},
+  {"name":"CPM","type":"number"},
+  {"name":"CTR","type":"number"},
+  {"name":"Hook rate","type":"number"},
+  {"name":"CPMC","type":"number"},
+  {"name":"CPL","type":"number"},
+  {"name":"CPA","type":"number"},
+  {"name":"ROAS","type":"number"},
+  {"name":"Frequency","type":"number"},
+  {"name":"Đề xuất","type":"text"},
+  {"name":"Quyết định","type":"text"},
+  {"name":"Lý do","type":"text"}
+]

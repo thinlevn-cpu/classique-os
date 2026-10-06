@@ -1,0 +1,23 @@
+[
+  {"name":"Tên chiến dịch","type":"text"},
+  {"name":"Ngành","type":"select","options":[{"name":"Đào tạo / Khóa học"},{"name":"Spa / Thẩm mỹ"},{"name":"Bất động sản"},{"name":"Nha khoa / Phòng khám"},{"name":"F&B (Nhà hàng/Quán)"}]},
+  {"name":"Trạng thái","type":"select","options":[{"name":"Chờ dựng"},{"name":"Đã tạo nháp"},{"name":"Đang chạy"},{"name":"Tạm dừng"},{"name":"Kết thúc"}]},
+  {"name":"Giá bán P","type":"number"},
+  {"name":"Chi phí biến đổi V","type":"number"},
+  {"name":"Tỷ lệ chat to đơn","type":"number"},
+  {"name":"Tỷ lệ lead to đơn","type":"number"},
+  {"name":"Lợi nhuận muốn giữ","type":"number"},
+  {"name":"Ngân sách ngày","type":"number"},
+  {"name":"Trần chi tiêu cứng","type":"number"},
+  {"name":"Chế độ","type":"select","options":[{"name":"Khô (chỉ đề xuất)"},{"name":"Ướt (tự thực thi sau duyệt)"}]},
+  {"name":"Đối tượng","type":"text"},
+  {"name":"ad_account","type":"text"},
+  {"name":"page_id","type":"text"},
+  {"name":"Break-even ROAS","type":"number"},
+  {"name":"CPA mục tiêu","type":"number"},
+  {"name":"CPMC mục tiêu","type":"number"},
+  {"name":"CPL mục tiêu","type":"number"},
+  {"name":"campaign_id","type":"text"},
+  {"name":"Nhóm duyệt","type":"text"},
+  {"name":"Ghi chú","type":"text"}
+]

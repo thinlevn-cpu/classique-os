@@ -1,0 +1,7 @@
+[
+  {"name":"Thời điểm","type":"text"},
+  {"name":"Chiến dịch","type":"text"},
+  {"name":"Hành động","type":"text"},
+  {"name":"Người duyệt","type":"text"},
+  {"name":"Kết quả","type":"text"}
+]
