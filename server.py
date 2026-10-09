@@ -429,7 +429,8 @@ import ket_noi as KN
 
 CAU_HINH_TEP = GOC / "cau-hinh.json"
 MAC_DINH = {"ket_noi": {"lark": {"bat": True, "quyen": "de_xuat"}, "pancake": {"bat": True, "quyen": "doc"},
-                        "meta": {"bat": True, "quyen": "de_xuat"}, "wordpress": {"bat": True, "quyen": "de_xuat"}},
+                        "meta": {"bat": True, "quyen": "de_xuat"}, "wordpress": {"bat": True, "quyen": "de_xuat"},
+                        "dieu_hanh": {"bat": True, "quyen": "doc"}},
             "mcp_ngoai": [], "model": {"engine": "claude", "model": "sonnet"}}
 
 
@@ -509,6 +510,45 @@ KN.dang_ky("lark", f"Lark Base · {HS['lark']['ten_base']}", "Sổ cái của c�
             KN.cc("them_dong", "Thêm một dòng mới. o = {tên cột: giá trị}.", "ghi", lark_them,
                   {**_B, "o": {"type": "object"}, "ly_do": {"type": "string"}}, ("bang", "o", "ly_do"), tom_tat=_lark_tom_tat(False))],
            mac_dinh="de_xuat")
+
+
+# ---- Nhạc trưởng (New Brain van-hanh/nhac-truong, 09/10/2026) ----
+# Nhạc trưởng chạy dưới user classique (cùng user với các timer) và ghi MỘT file trạng thái. OS chỉ ĐỌC file đó:
+# không tự kiểm tác tử, không tốn lệnh Lark. Một người ghi, nhiều người đọc.
+NHAC_TRUONG_TEP = Path("/var/lib/nhac-truong/trang-thai.json")
+
+
+def nhac_truong():
+    try:
+        return json.loads(NHAC_TRUONG_TEP.read_text(encoding="utf-8"))
+    except Exception:
+        return None
+
+
+def _nt_suc_khoe(a=None):
+    d = nhac_truong()
+    if not d:
+        return {"loi": "Chưa có file trạng thái của Nhạc trưởng (timer classique-nhac-truong trên VPS)."}
+    return {"luc_kiem": d.get("luc_kiem"),
+            "tac_tu": [{k: t.get(k) for k in ("ten", "mau", "ly_do", "lich")} for t in d.get("tac_tu", [])]}
+
+
+def _nt_ban_tin(a=None):
+    return (nhac_truong() or {}).get("ban_tin") or {"loi": "Chưa có bản tin nào (bản tin gửi khoảng 7:37 mỗi sáng)."}
+
+
+def _nt_tom_tat():
+    d = nhac_truong()
+    if not d:
+        return "chưa có file trạng thái"
+    return f"{sum(1 for t in d.get('tac_tu', []) if t.get('mau') == 'do')} tác tử đỏ · kiểm lúc {d.get('luc_kiem')}"
+
+
+KN.dang_ky("dieu_hanh", "Nhạc trưởng · điều hành tác tử", "Sức khoẻ các tác tử tự động (timer VPS, Worker) và bản tin điều hành sáng nay",
+           "Điều hành", [], _nt_tom_tat,
+           [KN.cc("suc_khoe_tac_tu", "Tình trạng từng tác tử tự động: mau = xanh/vang/do/tay (chạy tay), lý do, lịch. Gọi khi anh hỏi hệ thống có ổn không, tác tử nào lỗi.", "doc", _nt_suc_khoe),
+            KN.cc("ban_tin_sang", "Bản tin điều hành gần nhất: lead, đơn, tiền vào hôm qua; tác tử lỗi; việc tồn của leader/kế toán.", "doc", _nt_ban_tin)],
+           mac_dinh="doc")
 
 
 def cong_cu_dang_bat():
@@ -1703,6 +1743,16 @@ def api_nk():
 
 @app.get("/api/viec")
 def api_viec():
+    """Có Nhạc trưởng: tác tử kèm màu sức khoẻ. Không có: đọc timer như cũ (_viec_tu_timer)."""
+    d = nhac_truong()
+    if not d:
+        return _viec_tu_timer()
+    icon = {"xanh": "🟢", "vang": "🟡", "do": "🔴", "tay": "⚪"}
+    return [{"ten": f"{icon.get(t.get('mau'), '')} {t.get('ten')}", "lich": [t.get("lich") or ""], "mo_ta": t.get("ly_do", ""),
+             "lenh": t.get("unit") or t.get("lenh") or ""} for t in d.get("tac_tu", [])]
+
+
+def _viec_tu_timer():
     """Các timer systemd chạy kèm trên máy chủ: bản chép trong du-lieu/timers (chỉ để xem, không lên git)."""
     thu_muc = GOC / "du-lieu" / "timers"
     ra = []
